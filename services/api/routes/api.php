@@ -3,10 +3,15 @@
 use App\Http\Controllers\Api\v1\AdminController;
 use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\CategoryController;
+use App\Http\Controllers\Api\v1\DisputeController;
+use App\Http\Controllers\Api\v1\NotificationController;
 use App\Http\Controllers\Api\v1\OrderController;
+use App\Http\Controllers\Api\v1\PayoutController;
 use App\Http\Controllers\Api\v1\ProductController;
 use App\Http\Controllers\Api\v1\SellerController;
 use App\Http\Controllers\Api\v1\SellerDashboardController;
+use App\Http\Controllers\Api\v1\VerificationController;
+use App\Http\Controllers\Api\v1\WebhookController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -26,18 +31,33 @@ Route::prefix('v1')->group(function () {
     // Cart / Checkout Quote (Accessible to both guests & logged in)
     Route::post('/checkout/quote', [OrderController::class, 'quote']);
 
+    // Webhooks for Payment Gateways and Courier Dispatch (Rate limited, exempt from sanctum auth)
+    Route::prefix('webhooks')->middleware('throttle:60,1')->group(function () {
+        Route::post('/payment/{provider}', [WebhookController::class, 'paymentWebhook']);
+        Route::post('/courier/{provider}', [WebhookController::class, 'courierWebhook']);
+    });
+
     // Authenticated Routes
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/auth/me', [AuthController::class, 'me']);
         Route::post('/auth/logout', [AuthController::class, 'logout']);
 
-        // Buyer Orders & Addresses
+        // Notifications
+        Route::get('/notifications', [NotificationController::class, 'index']);
+        Route::patch('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+        Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead']);
+
+        // Buyer Orders, Addresses, Reviews & Disputes
         Route::post('/checkout/process', [OrderController::class, 'checkout']);
         Route::get('/orders', [OrderController::class, 'index']);
         Route::get('/orders/{orderNumber}', [OrderController::class, 'show']);
         Route::post('/orders/{orderNumber}/review', [OrderController::class, 'submitReview']);
         Route::get('/addresses', [OrderController::class, 'addresses']);
         Route::post('/addresses', [OrderController::class, 'saveAddress']);
+
+        // Disputes
+        Route::get('/disputes', [DisputeController::class, 'index']);
+        Route::post('/orders/{orderNumber}/dispute', [DisputeController::class, 'store']);
 
         // Seller Hub Routes
         Route::prefix('seller')->group(function () {
@@ -48,6 +68,15 @@ Route::prefix('v1')->group(function () {
             Route::delete('/products/{id}', [SellerDashboardController::class, 'deleteProduct']);
             Route::get('/orders', [SellerDashboardController::class, 'orders']);
             Route::patch('/orders/{id}/status', [SellerDashboardController::class, 'updateOrderStatus']);
+            Route::post('/orders/{id}/shipment', [SellerDashboardController::class, 'createShipment']);
+
+            // Verification
+            Route::get('/verification', [VerificationController::class, 'status']);
+            Route::post('/verification', [VerificationController::class, 'store']);
+
+            // Payouts & Financial Ledger
+            Route::get('/payouts', [PayoutController::class, 'sellerPayouts']);
+            Route::get('/disputes', [DisputeController::class, 'sellerDisputes']);
         });
 
         // Admin Console Routes
@@ -55,6 +84,18 @@ Route::prefix('v1')->group(function () {
             Route::get('/stats', [AdminController::class, 'stats']);
             Route::post('/sellers/{id}/verify', [AdminController::class, 'verifySeller']);
             Route::get('/audit-logs', [AdminController::class, 'auditLogs']);
+
+            // Verification moderation
+            Route::get('/verifications', [VerificationController::class, 'adminIndex']);
+            Route::post('/verifications/{id}/review', [VerificationController::class, 'review']);
+
+            // Payouts management
+            Route::get('/payouts', [PayoutController::class, 'adminPayouts']);
+            Route::post('/payouts/{id}/disburse', [PayoutController::class, 'disburse']);
+
+            // Disputes resolution
+            Route::get('/disputes', [DisputeController::class, 'adminDisputes']);
+            Route::post('/disputes/{id}/resolve', [DisputeController::class, 'resolve']);
         });
     });
 });

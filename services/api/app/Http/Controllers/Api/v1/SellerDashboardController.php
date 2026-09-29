@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
+use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductImage;
@@ -218,4 +219,40 @@ class SellerDashboardController extends Controller
             'message' => "Order item status updated to {$validated['status']}.",
         ]);
     }
+
+    /**
+     * Book courier shipment for an order
+     */
+    public function createShipment(Request $request, int $orderId): JsonResponse
+    {
+        $seller = $this->getSeller($request);
+
+        $validated = $request->validate([
+            'courier' => 'required|string|in:tcs,trax',
+            'origin_city' => 'nullable|string|max:100',
+            'shipping_cost' => 'nullable|numeric|min:0',
+        ]);
+
+        $order = Order::with('items')->findOrFail($orderId);
+
+        // Verify seller has items in this order
+        $hasItems = $order->items->where('seller_id', $seller->id)->isNotEmpty();
+        if (!$hasItems) {
+            return response()->json(['message' => 'Unauthorized. You have no items in this order.'], 403);
+        }
+
+        $logisticsService = app(\App\Services\LogisticsService::class);
+        $shipment = $logisticsService->createShipment(
+            $order,
+            $seller->id,
+            $validated['courier'],
+            $validated
+        );
+
+        return response()->json([
+            'data' => $shipment,
+            'message' => "Shipment successfully booked with {$validated['courier']}. Consignment Tracking: {$shipment->tracking_number}",
+        ], 201);
+    }
 }
+
