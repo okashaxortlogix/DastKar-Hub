@@ -1,292 +1,370 @@
 <div align="center">
 
-# 🏺 DastKar Hub (دستکار ہب)
-### Pakistan's Premier Handcrafted Artisan Marketplace & Discovery Platform
-
-[![Backend Tests](https://img.shields.io/badge/Backend%20Tests-24%20Passed%20(298%20Assertions)-emerald?style=for-the-badge&logo=php&logoColor=white)](services/api/tests)
-[![Frontend Build](https://img.shields.io/badge/Frontend%20Build-Vite%208%20%7C%20React%2019-blue?style=for-the-badge&logo=react&logoColor=white)](apps/web)
-[![Tailwind CSS](https://img.shields.io/badge/Styling-Tailwind%20CSS%20v4-38bdf8?style=for-the-badge&logo=tailwindcss&logoColor=white)](apps/web)
-[![Laravel](https://img.shields.io/badge/Backend-Laravel%2012%20Modular%20Monolith-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](services/api)
-[![Database](https://img.shields.io/badge/Data-325%20Products%20%7C%2050%20Makers-amber?style=for-the-badge&logo=sqlite&logoColor=white)](services/api/database)
+# 🏺 DastKar Hub • دستکار ہب
+### *Pakistan's Premier Artisanal Heritage & Discovery Marketplace*
 
 <p align="center">
-  <b>Bridging centuries of generational craftsmanship with modern e-commerce discovery.</b><br>
-  Direct from artisan workshops in Multan, Hala, Chiniot, Peshawar, Swat, Quetta, Lahore, Karachi, and Gilgit.
+  <b>Empowering generational craftsmen across Pakistan by connecting indigenous heritage directly with global patrons.</b><br>
+  <i>Eliminating exploitative intermediaries • Built-in Bayesian Discovery Engine • Zero-friction Craft Commerce</i>
 </p>
 
-[Explore Features](#-key-features) •
-[Discovery Engine](#-internal-discovery--ranking-engine) •
-[Quick Start](#-quick-start) •
-[API Reference](#-api-endpoints) •
-[Craft Heritage](#-regional-craft-clusters) •
-[Cybersecurity](#-cybersecurity--governance)
+[![Release](https://img.shields.io/badge/Release-v1.0.0--Production-0ea5e9?style=for-the-badge&logo=github&logoColor=white)](https://github.com/okashaxortlogix/DastKar-Hub)
+[![Backend Tests](https://img.shields.io/badge/PHPUnit-24%20Passed%20(298%20Assertions)-10b981?style=for-the-badge&logo=php&logoColor=white)](services/api/tests)
+[![Vite Build](https://img.shields.io/badge/Frontend-Vite%208%20%7C%20React%2019-6366f1?style=for-the-badge&logo=react&logoColor=white)](apps/web)
+[![Tailwind](https://img.shields.io/badge/Styling-Tailwind%20CSS%20v4-38bdf8?style=for-the-badge&logo=tailwindcss&logoColor=white)](apps/web)
+[![Laravel Monolith](https://img.shields.io/badge/Architecture-Laravel%2012%20Monolith-ef4444?style=for-the-badge&logo=laravel&logoColor=white)](services/api)
+[![Catalog](https://img.shields.io/badge/Live%20Data-325%20Products%20%7C%2050%20Makers-f59e0b?style=for-the-badge&logo=sqlite&logoColor=white)](services/api/database)
+[![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](LICENSE)
+
+<br>
+
+[✨ Key Features](#-key-features) •
+[🧠 Discovery Engine](#-algorithmic-discovery--ranking-engine) •
+[🏛️ Heritage Footprint](#-regional-craft-clusters) •
+[🏗️ Architecture](#-system-architecture--monorepo-layout) •
+[⚡ Quick Start](#-quick-start-guide) •
+[📡 API Reference](#-rest-api-documentation) •
+[🧪 Verification & Tests](#-test-suite--quality-metrics) •
+[🔒 Security](#-security-hardening--governance)
 
 ---
 
 </div>
 
-## 🌟 Executive Overview
+<br>
 
-**DastKar Hub** is a production-grade, full-stack multi-vendor marketplace tailored specifically for Pakistan's artisanal heritage. It eliminates exploitative middleman markups by connecting verified generational craftsmen directly with national and international patrons.
+## 📖 Executive Summary
 
-The marketplace features a live, seeded dataset of **325 handcrafted products** across **19 craft disciplines & 81 subcategories**, crafted by **50 verified Pakistani makers**, backed by an **Algorithmic Discovery & Ranking Engine** with **30-Day Artisan Launch Boost**, automated escrow management, and comprehensive mobile-responsive design.
+**DastKar Hub** (دستکار ہب) is an enterprise-grade, full-stack multi-vendor e-commerce platform engineered specifically to revive and digitize Pakistan's endangered craft ecosystems. 
 
----
+Centuries-old artisanal communities—ranging from Multan’s *Kashigari* blue pottery masters to Chiniot’s rosewood carvers and Swati handloom weavers—have historically been confined to localized bazaars or suffered massive markups from commercial middlemen. DastKar Hub provides these generational masters with an autonomous digital presence, real-time escrow payments, standardized national logistics, and an equitable **Algorithmic Discovery Engine** that ensures new and remote artisans receive authentic visibility without paid advertisement paywalls.
 
-## 🚀 Key Features
-
-### 🛍️ Buyer & Patron Experience
-* **Curated Craft Discovery:** Browse indigenous crafts with Bayesian rating smoothing, engagement velocity, and regional origin tracking.
-* **Flash Craft Bazaar:** Live Daraz-style countdown sales driven directly from backend trending discovery metrics.
-* **Artisan Customization:** Real-time personalizations (custom name engraving, Ajrak monograms, artisan gift packaging).
-* **Multi-Carrier Checkout:** Seamless checkout supporting Cash on Delivery (COD), JazzCash, EasyPaisa, and Direct Bank Transfer (IBFT) with city-tier shipping calculation.
-* **Saved Wishlist & Order Tracking:** Real-time courier dispatch status with order-level transit replacement guarantee.
-* **Smooth Navigation:** Automatic scroll-to-top on route changes and tab switches, with a floating glassmorphic Back-to-Top action button.
-
-### 🔨 Artisan / Maker Command Center
-* **Storefront Management:** Workshop banner customization, artisan heritage bio, location badges, and live catalog controls.
-* **Order Fulfillment Pipeline:** Live tracking from workshop curing/firing to courier pickup and delivery confirmation.
-* **30-Day Launch Boost Dashboard:** Transparent status indicator displaying remaining launch days, current boost percentage (+20%), and consistency indicators.
-* **Financial Ledger:** Escrow payouts tracking with bank account/IBAN management for direct Raast/1Link disbursements.
-
-### 🛡️ Platform Administration & Governance
-* **Artisan Vetting Queue:** Review and approve pending maker studio verification submissions (`basic` &rarr; `verified` &rarr; `established`).
-* **Dispute Resolution Desk:** Evidence-based mediation for transit breakages (fragile pottery guarantee) and specification mismatches.
-* **Escrow Disbursement Engine:** Double-entry ledger releasing payments upon verified courier delivery.
-* **Discovery Parameter Controls:** Live tuning of ranking weights, freshness windows, and anti-monopoly seller diversity limits.
+The platform comes pre-seeded with a comprehensive, realistic catalog of **325 handcrafted items** distributed across **19 craft disciplines** and **81 subcategories**, representing **50 verified Pakistani artisan studios**.
 
 ---
 
-## 🧠 Internal Discovery & Ranking Engine
+## ✨ Key Features
 
-DastKar Hub features a built-in search and discovery ranking engine located at `services/api/app/Services/Discovery/` that dynamically balances consumer relevance, artisan quality, and community fairness.
+### 🛍️ For Patrons & Collectors (Buyer Experience)
+<table>
+  <tr>
+    <td width="50%">
+      <h4>🔍 Algorithmic Fair-Trade Discovery</h4>
+      Browse indigenous crafts ranked by Bayesian rating smoothing, engagement velocity, and verified artisan credentials rather than sponsored ads.
+    </td>
+    <td width="50%">
+      <h4>⚡ Live Flash Bazaar</h4>
+      Daraz-style real-time countdown flash sales with dynamic stock meters and volume pricing driven directly from backend trending metrics.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h4>✍️ Bespoke Artisan Customization</h4>
+      Request tailored modifications (custom Urdu calligraphy engraving, Ajrak monogramming, artisan gift boxes) with transparent live cost calculation.
+    </td>
+    <td width="50%">
+      <h4>💳 Multi-Channel National Checkout</h4>
+      Full support for Cash on Delivery (COD), JazzCash, EasyPaisa, and Direct Bank Transfer (IBFT) with automated city-tier courier rates.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h4>📦 Order Tracking & Fragile Guarantee</h4>
+      Step-by-step courier fulfillment statuses from workshop firing to doorstep delivery, backed by a transit replacement guarantee for fragile ceramics.
+    </td>
+    <td width="50%">
+      <h4>📱 Seamless Mobile Experience</h4>
+      Fluid responsive design with sticky mobile purchase bars, bottom navigation, faceted filter drawers, and automatic scroll-to-top on route changes.
+    </td>
+  </tr>
+</table>
 
-### Mathematical Scoring Formula
+### 🔨 For Artisans & Masters (Maker Command Center)
+* **Autonomous Studio Storefront:** Custom artisan cover banners, generational workshop biography, master artisan badges, and city origin indicators.
+* **Fulfillment Pipeline:** Track orders through preparation, curing, courier handover, and completion.
+* **30-Day Launch Boost Visualizer:** Transparent dashboard showing remaining boost days, current multiplier (+20%), and consistency scores.
+* **Financial Ledger & Raast Payouts:** Real-time visibility into escrowed funds, cleared payouts, and direct IBAN/bank disbursements.
 
-$$\text{Final Score} = \left( \sum_{i=1}^{n} (W_i \times S_i) + \text{Effective Boost} \right) \times \text{Availability Multiplier}$$
+### 🛡️ For Platform Stewards (Admin & Governance)
+* **Artisan Vetting Queue:** Review studio proofs, CNIC identification, and craft authenticity (`basic` &rarr; `verified` &rarr; `established`).
+* **Dispute Resolution Desk:** Evidence-based mediation for transit breakages, transit insurance, and patron refund claims.
+* **Double-Entry Escrow Ledger:** Automated transaction tracking ensuring funds are strictly held until delivery confirmation.
+* **Discovery Tuning Panel:** Real-time calibration of ranking weights, freshness half-life decay, and anti-monopoly seller diversity ceilings.
+
+---
+
+## 🧠 Algorithmic Discovery & Ranking Engine
+
+At the core of DastKar Hub lies an internal discovery and ranking engine located at `services/api/app/Services/Discovery/`. It balances patron relevance, artisan craft quality, and community fairness through a multi-factor mathematical formulation.
+
+### 📐 Mathematical Formulation
+
+$$\text{Composite Score} = \left( \sum_{i=1}^{n} (W_i \times S_i) + \text{Effective Launch Boost} \right) \times \text{Availability Multiplier}$$
+
+Where the **Effective Launch Boost** is dynamically governed by search context:
+$$\text{Effective Launch Boost} = \text{Base Boost (20\%)} \times \text{Consistency Multiplier} \times \text{Query Relevance}$$
 
 ```mermaid
-graph TD
-    A[Search Query / Category Browse] --> B[Multi-Term Relevance Filter]
-    B --> C[Compute Core Signals]
-    C --> C1[Bayesian Reviews - 15%]
-    C --> C2[Listing Quality - 10%]
-    C --> C3[Engagement Velocity - 10%]
-    C --> C4[Order Conversion - 10%]
-    C --> C5[Seller Trust & Delivery - 10%]
-    C --> C6[Freshness Decay - 5%]
-    C --> D[Calculate Base Score]
-    D --> E{New Maker Eligible?}
-    E -- Yes --> F[Apply 30-Day 20% Boost x Relevance]
-    E -- No --> G[No Boost]
-    F --> H[Apply Stock Multiplier 0.10x if OOS]
-    G --> H
-    H --> I[Enforce Seller Diversity Rotation: Max 3/Seller]
-    I --> J[Ranked Output Feed]
+flowchart TD
+    Start([Patron Query / Catalog Request]) --> Filter[Relevance Matching & Keyword Extraction]
+    Filter --> Signals[Compute Multi-Factor Signals]
+    
+    subgraph Signal_Matrix [Core Signal Aggregation]
+        S1[Relevance Score: 30%]
+        S2[Bayesian Reviews: 15%]
+        S3[Listing Completeness: 10%]
+        S4[Engagement Velocity: 10%]
+        S5[Historical Conversion: 10%]
+        S6[Artisan Trust Tier: 10%]
+        S7[Freshness Decay: 5%]
+    end
+    
+    Signals --> S1 & S2 & S3 & S4 & S5 & S6 & S7
+    S1 & S2 & S3 & S4 & S5 & S6 & S7 --> AggScore[Sum Weighted Base Score]
+    
+    AggScore --> CheckBoost{Is Maker in 30-Day Launch Window?}
+    CheckBoost -- Yes --> CalcBoost[Apply +20% Boost x Consistency x Query Relevance]
+    CheckBoost -- No --> NoBoost[Boost = 0.0]
+    
+    CalcBoost --> StockMultiplier{In Stock?}
+    NoBoost --> StockMultiplier
+    
+    StockMultiplier -- Yes --> FullStock[Multiplier = 1.0x]
+    StockMultiplier -- No --> PenaltyStock[Multiplier = 0.10x Deprioritized]
+    
+    FullStock --> AntiMonopoly[Enforce Anti-Monopoly Rotation<br>Max 3 Products per Maker]
+    PenaltyStock --> AntiMonopoly
+    
+    AntiMonopoly --> FinalFeed([Ranked Marketplace Feed])
+
+    style Signal_Matrix fill:#f8fafc,stroke:#0284c7,stroke-width:2px
+    style AntiMonopoly fill:#fef3c7,stroke:#d97706,stroke-width:2px
+    style FinalFeed fill:#ecfdf5,stroke:#059669,stroke-width:2px
 ```
 
-### Signal Weights Configuration (`config/discovery.php`)
+### 📊 Ranking Signal Matrix (`config/discovery.php`)
 
-| Signal | Weight ($W_i$) | Description |
+| Signal Identifier | Weight ($W_i$) | Algorithmic Definition & Description |
 | :--- | :---: | :--- |
-| **Relevance** | `0.30` | Multi-token coverage across title, category, materials, dimensions, and artisan city. |
-| **Reviews** | `0.15` | Bayesian-smoothed rating ($m=3, C=4.5$) prevents 1-review anomalies from dominating. |
-| **Quality** | `0.10` | Evaluates multi-angle images, description depth, care guide, and dimensions. |
-| **Engagement** | `0.10` | Log-normalized click and wishlist velocity: $\frac{\log(1 + \text{clicks} + 2.5 \times \text{wishlists})}{\log(501)}$. |
-| **Conversion** | `0.10` | Sample-damped purchase rate rewarding high buyer intent. |
-| **Seller Trust** | `0.10` | Tier score (`established` > `verified` > `basic`), on-time delivery rate, cancellation penalty. |
-| **Freshness** | `0.05` | Linear decay over a 30-day window from publication date. |
-| **Availability** | `0.10` | Multiplier penalty ($0.10\times$) applied if an item goes out of stock. |
+| **`relevance`** | **0.30** | Multi-token coverage over title, category, materials, dimensions, and artisan origin city. |
+| **`reviews`** | **0.15** | Bayesian-smoothed rating calculation: $\frac{(C \times m) + (R \times n)}{C + n}$ with $C=4.5$ and $m=3$. Prevents single 5-star anomalies from dominating. |
+| **`listing_quality`** | **0.10** | Evaluates gallery depth ($\ge 3$ photos), description length, dimensions, and craft care instructions. |
+| **`engagement`** | **0.10** | Log-scaled engagement velocity: $\frac{\log(1 + \text{clicks} + 2.5 \times \text{wishlists})}{\log(501)}$. |
+| **`conversion`** | **0.10** | Damped order-to-impression ratio rewarding items with demonstrated buyer intent. |
+| **`seller_trust`** | **0.10** | Composite score derived from verification tier (`established` > `verified` > `basic`), on-time delivery ($\ge 90\%$), and dispute rate. |
+| **`freshness`** | **0.05** | Linear decay curve over a 30-day temporal window from initial product publication. |
+| **`availability`** | **0.10** | Binary dampener ($0.10\times$ penalty) applied if inventory is zero, keeping out-of-stock items visible but ranked low. |
 
-### 🚀 30-Day Artisan Launch Boost & Consistency Policy
-* **Launch Window:** Qualified new verified makers receive up to **+20% discovery boost** (`max_boost_score = 0.20`) during their first 30 days.
-* **Consistency Check:** If a maker maintains active stock, fulfills $\ge 90\%$ of orders on time, and keeps cancellations $\le 5\%$, their full boost is preserved. Inconsistent sellers experience linear decay.
-* **Relevance Safeguard:** When a shopper searches for specific terms (e.g., `"Multani Blue Pottery"`), the boost is attenuated by query relevance: $\text{EffectiveBoost} = \text{Boost} \times \text{Relevance}$. Irrelevant new products can never leapfrog matching established crafts.
-* **Anti-Monopoly Diversity:** Enforces a ceiling of **maximum 3 products per maker** in top discovery feeds, ensuring healthy regional variety.
+### 🚀 30-Day Artisan Launch Boost Rules
+1. **Launch Privilege:** Newly onboarded, verified artisan studios receive up to a **+20% discovery boost** (`max_boost_score = 0.20`) during their initial 30 days.
+2. **Consistency Protection:** Boost is sustained only if the artisan maintains active stock, fulfills $\ge 90\%$ of orders on schedule, and maintains cancellations $\le 5\%$.
+3. **Relevance Safeguard:** The boost is modulated by query relevance. A new maker selling brassware will never overtake a Multani blue pottery master when a patron specifically queries `"Blue Pottery"`.
+4. **Anti-Monopoly Diversity:** Top feeds strictly cap any single artisan studio at a **maximum of 3 products**, guaranteeing diverse regional representation.
 
 ---
 
 ## 🏛️ Regional Craft Clusters
 
-DastKar Hub directly represents Pakistan's recognized geographic artisan hubs:
+DastKar Hub honors and maps Pakistan's authentic craft geography:
 
 ```text
-🇵🇰 Pakistan Artisan Footprint
-├── 🏺 Multan & Hala           → Blue Pottery, Glazed Terracotta (Kashigari)
-├── 🪑 Chiniot & Gujrat        → Rosewood Carving, Brass Inlay, Sheesham Furniture
-├── 🧣 Swat Valley & Kashmir   → Pashmina Wool Weaving, Handloom Shawls, Silver Filigree
-├── 👡 Peshawar & Bannu        → Traditional Leather Saddlery, Peshawari Chappals
-├── 🎨 Rawalpindi & Lahore     → Pakistani Truck Art, Mughal Miniatures, Calligraphy
-├── 🪡 Sindh (Hala, Sukkur)    → Natural Indigo Ajrak, Block Printing, Hurmicho
-├── 🪞 Balochistan (Quetta)    → Balochi Mirrorwork, Do-Toch Tribal Embroidery
-└── 💎 Gilgit-Baltistan        → Natural Lapis Lazuli, Ruby & Tourmaline Jewelry
+🇵🇰 PAKISTAN ARTISAN CLUSTER FOOTPRINT
+├── 🏺 Multan & Hala            → Blue Pottery, Glazed Terracotta, Kashigari Tilework
+├── 🪑 Chiniot & Gujrat         → Rosewood (Sheesham) Carving, Brass Wire Inlay, Jharoka Art
+├── 🧣 Swat Valley & Kashmir    → Pashmina Shawls, Handloom Tweed, Walnut Wood Craft
+├── 👡 Peshawar & Bannu         → Authentic Peshawari Chappal, Hand-Stitched Leather Goods
+├── 🎨 Rawalpindi & Lahore      → Pakistani Truck Art, Mughal Miniature Painting, Calligraphy
+├── 🪡 Sindh (Hala, Sukkur)     → Natural Indigo Ajrak, Hand-Blocked Textiles, Ralli Quilts
+├── 🪞 Balochistan (Quetta)     → Balochi Mirrorwork, Do-Toch & Sheeshah Embroidery
+└── 💎 Gilgit-Baltistan         → Lapis Lazuli, Ruby & Tourmaline Sterling Silver Jewelry
 ```
 
 ---
 
-## 📦 Project Architecture & Monorepo Hierarchy
+## 🏗️ System Architecture & Monorepo Layout
+
+DastKar Hub is architected as a cohesive **Modular Monolith** pairing a high-performance React Single Page Application (SPA) with a secure Laravel 12 API service.
 
 ```text
 DastKar-Hub/
-├── apps/
-│   └── web/                                  # Frontend SPA (Vite 8 + React 19 + TypeScript)
-│       ├── public/                           # Static assets, logos, favicon
-│       ├── src/
-│       │   ├── components/                   # Modular UI components
-│       │   │   ├── commerce/                 # ProductCard, CartItem, TrustBadges
-│       │   │   ├── common/                   # ScrollToTop, Floating Back-To-Top button
-│       │   │   ├── layout/                   # Navbar, Footer, MobileBottomNav
-│       │   │   └── ui/                       # Toast, Modal, ErrorBoundary
-│       │   ├── lib/                          # State management & network layer
-│       │   │   ├── api.ts                    # Strongly typed API client with session management
-│       │   │   ├── authContext.tsx           # Session context with Sanctum token store
-│       │   │   ├── cartContext.tsx           # Cart state with persistent storage
-│       │   │   └── wishlistContext.tsx       # Wishlist state with optimistic updates
-│       │   ├── pages/                        # Responsive page routes
-│       │   │   ├── HomePage.tsx              # Discovery landing, flash sale, collections
-│       │   │   ├── ProductListPage.tsx       # Faceted catalog with filter drawer & sorting
-│       │   │   ├── ProductDetailPage.tsx     # Gallery, customization, sticky mobile purchase bar
-│       │   │   ├── MakersDirectoryPage.tsx   # Artisan directory with craft discipline tabs
-│       │   │   ├── MakerProfilePage.tsx      # Artisan storefront with cover & scorecard
-│       │   │   ├── CustomerDashboardPage.tsx # Order tracking, wishlist, patron feedback
-│       │   │   ├── SellerDashboardPage.tsx   # Maker command center & boost monitor
-│       │   │   ├── AdminDashboardPage.tsx    # Governance, verification queue, disputes
-│       │   │   ├── AuthPage.tsx              # Clean Patron / Artisan authentication
-│       │   │   └── CheckoutPage.tsx          # Multi-step checkout with COD calculation
-│       │   └── types/index.ts                # TypeScript interface definitions
-│       └── vite.config.ts                    # Vite config with /api reverse proxy to port 8001
+├── 📁 apps/
+│   └── 📁 web/                                 # Modern Frontend SPA
+│       ├── 📁 public/                          # Static brand assets, favicon, badges
+│       ├── 📁 src/
+│       │   ├── 📁 components/
+│       │   │   ├── 📁 commerce/                # ProductCard, CartDrawer, TrustBadges
+│       │   │   ├── 📁 common/                  # ScrollToTop, FloatingBackToTop button
+│       │   │   ├── 📁 layout/                  # Navbar, Footer, MobileBottomNav
+│       │   │   └── 📁 ui/                      # Modal, ToastNotification, ErrorBoundary
+│       │   ├── 📁 lib/                         # State machines & network layer
+│       │   │   ├── api.ts                      # Axios/Fetch API client with Sanctum interceptors
+│       │   │   ├── authContext.tsx             # Patron & artisan authentication context
+│       │   │   ├── cartContext.tsx             # Persistent multi-item cart state
+│       │   │   └── wishlistContext.tsx         # Optimistic wishlist synchronization
+│       │   ├── 📁 pages/                       # Screen routes with responsive breakpoints
+│       │   │   ├── HomePage.tsx                # Hero discovery, Flash Sale, Maker showcase
+│       │   │   ├── ProductListPage.tsx         # Filter drawer, search, sorting dropdowns
+│       │   │   ├── ProductDetailPage.tsx       # Dynamic gallery, customization, sticky CTA
+│       │   │   ├── MakersDirectoryPage.tsx     # Filterable artisan directory & region badges
+│       │   │   ├── MakerProfilePage.tsx        # Artisan storefront, studio bio & scorecard
+│       │   │   ├── CustomerDashboardPage.tsx   # Order tracking, addresses, review authoring
+│       │   │   ├── SellerDashboardPage.tsx     # Maker studio stats, products, boost status
+│       │   │   ├── AdminDashboardPage.tsx      # Platform vetting queue & dispute desk
+│       │   │   ├── AuthPage.tsx                # Streamlined dual-role login & registration
+│       │   │   └── CheckoutPage.tsx            # Multi-carrier shipping & COD calculator
+│       │   └── 📁 types/index.ts               # Complete TypeScript interfaces
+│       ├── package.json                        # Frontend dependencies & scripts
+│       └── vite.config.ts                      # Reverse proxy config (/api -> port 8001)
 │
-├── services/
-│   └── api/                                  # Backend Modular Monolith (Laravel 12)
-│       ├── app/
-│       │   ├── Http/Controllers/Api/v1/      # REST API resource controllers
-│       │   │   ├── AuthController.php        # Register, login, token issue
-│       │   │   ├── CategoryController.php    # Category hierarchy & subcategories
-│       │   │   ├── ProductController.php     # Search, filter, ranking sort integration
-│       │   │   ├── DiscoveryController.php   # Trending, recommended, new makers, telemetry
-│       │   │   ├── SellerDashboardController.php # Maker stats, products, boost status
-│       │   │   └── AdminController.php       # Platform GMV, vetting, disputes
-│       │   ├── Models/                       # Eloquent models with relations & casts
-│       │   │   ├── Product.php               # Product with ranking score & seed flags
-│       │   │   ├── SellerProfile.php         # Maker with boost timeline & ratings
-│       │   │   ├── Order.php                 # Orders with transactional status
-│       │   │   ├── OrderItem.php             # Historical price & product snapshots
-│       │   │   └── DiscoveryEvent.php        # Telemetry impression & conversion logs
-│       │   └── Services/Discovery/           # Algorithmic Discovery Engine
-│       │       ├── ProductRankingService.php # Multi-factor scoring calculation
-│       │       ├── MakerRankingService.php   # Artisan tier & score evaluation
-│       │       ├── NewSellerBoostService.php # 30-day 20% boost with decay logic
-│       │       └── DiscoveryEventService.php # Telemetry ingestion with rate limiting
-│       ├── config/discovery.php              # Centralized ranking weights & parameters
-│       ├── database/
-│       │   ├── migrations/                   # 13 structured database migrations
-│       │   └── seeders/                      # 325 products & 50 Pakistani makers seeder
-│       ├── routes/api.php                    # Versioned /api/v1 routes with throttling
-│       └── tests/Feature/                    # Automated integration & discovery tests
+├── 📁 services/
+│   └── 📁 api/                                 # Backend Modular Monolith (Laravel 12)
+│       ├── 📁 app/
+│       │   ├── 📁 Http/Controllers/Api/v1/     # Versioned REST Controllers
+│       │   │   ├── AuthController.php          # Session management & token issuance
+│       │   │   ├── CategoryController.php      # Category hierarchy with subcategories
+│       │   │   ├── ProductController.php       # Catalog querying with discovery engine
+│       │   │   ├── DiscoveryController.php     # Trending, recommended & telemetry APIs
+│       │   │   ├── SellerDashboardController.php # Maker management & boost metrics
+│       │   │   └── AdminController.php         # Verification queue & escrow dispute actions
+│       │   ├── 📁 Models/                      # Eloquent ORM Models
+│       │   │   ├── Product.php                 # Searchable product with discovery scopes
+│       │   │   ├── SellerProfile.php           # Artisan studio metadata & rating metrics
+│       │   │   ├── Order.php                   # Double-entry order lifecycle tracking
+│       │   │   ├── OrderItem.php               # Price snapshot & customization capture
+│       │   │   └── DiscoveryEvent.php          # Telemetry logs for clicks & conversions
+│       │   └── 📁 Services/Discovery/          # Algorithmic Discovery Service Layer
+│       │       ├── ProductRankingService.php   # Multi-factor mathematical scoring
+│       │       ├── MakerRankingService.php     # Artisan quality scoring
+│       │       ├── NewSellerBoostService.php   # 30-day 20% boost & decay calculation
+│       │       └── DiscoveryEventService.php   # Rate-limited telemetry ingestion
+│       ├── 📁 config/discovery.php             # Configurable ranking weights & thresholds
+│       ├── 📁 database/
+│       │   ├── 📁 migrations/                  # 13 structured database migrations
+│       │   └── 📁 seeders/                     # Seeders: 325 products & 50 Pakistani makers
+│       ├── 📁 routes/api.php                   # Versioned /api/v1 routes
+│       └── 📁 tests/Feature/                   # Comprehensive PHPUnit feature test suite
 │
-├── docs/                                     # Comprehensive architectural documentation
-│   ├── demo-data/                            # Seed data breakdown and inventory counts
-│   └── discovery/                            # Ranking signals, boost rules, event specs
-└── README.md
+├── 📁 docs/                                    # Technical architecture & discovery specs
+└── README.md                                   # Repository documentation
 ```
 
 ---
 
-## 🛠️ Technology Stack
+## 🛠️ Technology Stack & Specifications
 
-| Tier | Technologies | Highlights |
+| Dimension | Selected Technology | Architecture Rationale & Highlights |
 | :--- | :--- | :--- |
-| **Frontend** | React 19, TypeScript 5.8, Vite 8 | Ultra-fast HMR, sub-second production builds (740ms), strict types. |
-| **Styling** | Tailwind CSS v4, Lucide Icons | Responsive layout tokens (320px mobile to 4K), smooth gradients, custom scrollbars. |
-| **Backend** | PHP 8.2+, Laravel 12 | Modular Monolith, Laravel Sanctum token auth, service layer pattern. |
-| **Database** | SQLite (Dev/Test), PostgreSQL/MySQL (Prod) | Zero-friction local setup, relational foreign key constraints, indexes. |
-| **Testing** | PHPUnit, Laravel Feature Testing | 24 automated feature tests with 298 assertions covering all flows. |
+| **Frontend Framework** | **React 19 + TypeScript 5.8** | Ultra-responsive SPA architecture, strict typing, zero compilation warnings. |
+| **Build Tooling** | **Vite 8** | Sub-second development Hot Module Replacement (HMR) and ~740ms production bundle builds. |
+| **Design System** | **Tailwind CSS v4** | Modern CSS theme tokens, container queries, mobile-first responsive layout, custom scrollbars. |
+| **Iconography** | **Lucide React** | Lightweight, tree-shaken SVG iconography. |
+| **Backend Engine** | **Laravel 12 (PHP 8.2+)** | Robust modular monolith, service layer pattern, Sanctum token authentication. |
+| **Database** | **SQLite / PostgreSQL / MySQL** | Relational integrity with foreign keys, compound indexes on discovery columns. |
+| **Testing Suite** | **PHPUnit 11** | 24 automated feature test cases verifying ranking mathematics, checkouts, and security. |
 
 ---
 
-## ⚡ Quick Start
+## ⚡ Quick Start Guide
 
 ### Prerequisites
-* **Node.js**: v18.x or higher
-* **PHP**: v8.2 or higher with `pdo_sqlite`, `mbstring`, `openssl`, `curl`
-* **Composer**: v2.x
-* **Git**
+Make sure you have the following installed on your development machine:
+* **Node.js**: `v18.x` or higher ([Download Node](https://nodejs.org/))
+* **PHP**: `v8.2` or higher with extensions: `pdo_sqlite`, `mbstring`, `openssl`, `curl` ([Download PHP](https://www.php.net/))
+* **Composer**: `v2.x` ([Download Composer](https://getcomposer.org/))
+* **Git**: `v2.x`
 
-### 1. Clone the Repository
+---
+
+### Step 1: Clone the Repository
 ```bash
 git clone https://github.com/okashaxortlogix/DastKar-Hub.git
 cd DastKar-Hub
 ```
 
-### 2. Backend Setup (Laravel API)
+---
+
+### Step 2: Configure & Start Backend API (Port 8001)
 ```bash
 cd services/api
 
-# Install PHP dependencies
+# Install Composer dependencies
 composer install
 
-# Set environment
+# Configure environment file
 cp .env.example .env
 php artisan key:generate
 
-# Run migrations and seed all 325 products & 50 makers
+# Run migrations and seed 325 products & 50 Pakistani makers
 php artisan migrate:fresh --seed
 
-# Start Laravel API server on port 8001
+# Launch the Laravel development server on port 8001
 php artisan serve --host=127.0.0.1 --port=8001
 ```
-> The API will be live at `http://127.0.0.1:8001/api/v1`.
+> 💡 *The backend API will be live at `http://127.0.0.1:8001/api/v1`.*
 
-### 3. Frontend Setup (React + Vite)
-In a new terminal window:
+---
+
+### Step 3: Configure & Launch Frontend SPA (Port 5173)
+In a separate terminal window:
 ```bash
 cd apps/web
 
-# Install npm dependencies
+# Install frontend npm dependencies
 npm install
 
-# Start Vite dev server (automatically proxies /api to port 8001)
+# Start the Vite development server (proxies /api requests to port 8001)
 npm run dev
 ```
-> Open your browser at **`http://localhost:5173`**.
+> 🚀 *Open your browser and navigate to **`http://localhost:5173`**.*
 
 ---
 
-## 📡 API Endpoints
+## 📡 REST API Documentation
 
-### 🔍 Discovery & Ranking Endpoints
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/api/v1/discovery/trending` | Returns top engagement crafts with anti-monopoly diversity. |
-| `GET` | `/api/v1/discovery/new-arrivals` | Freshness-ranked items within the decay window. |
-| `GET` | `/api/v1/discovery/best-sellers` | Order-volume-ranked items. |
-| `GET` | `/api/v1/discovery/recommended` | Contextual multi-signal personalized recommendations. |
-| `GET` | `/api/v1/discovery/new-makers` | Newly onboarded qualifying studios receiving boost. |
-| `GET` | `/api/v1/discovery/config` | Returns current ranking weights and boost parameters. |
-| `POST` | `/api/v1/discovery/events` | Ingests impression, click, and conversion telemetry. |
+All endpoints are versioned under `/api/v1` and return standardized JSON payloads:
+
+### 🔍 Discovery & Telemetry Endpoints
+| HTTP Method | Endpoint Path | Authentication | Description |
+| :---: | :--- | :---: | :--- |
+| `GET` | `/api/v1/discovery/trending` | Public | Ranked feed prioritizing engagement velocity & Bayesian ratings. |
+| `GET` | `/api/v1/discovery/new-arrivals` | Public | Freshness-ranked crafts within the 30-day decay window. |
+| `GET` | `/api/v1/discovery/best-sellers` | Public | Volume-based top craft listings with diversity enforcement. |
+| `GET` | `/api/v1/discovery/recommended` | Optional | Multi-signal personalized or category-contextual feed. |
+| `GET` | `/api/v1/discovery/new-makers` | Public | Newly approved studios benefiting from the 30-day launch boost. |
+| `GET` | `/api/v1/discovery/config` | Public | Returns current algorithmic weights and boost constants. |
+| `POST` | `/api/v1/discovery/events` | Public / Throttled | Telemetry collector for impressions, product views, and cart additions. |
 
 ### 🏺 Catalog & Marketplace Endpoints
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/api/v1/categories` | Complete craft categories hierarchy with subcategories. |
-| `GET` | `/api/v1/products?sort=ranked` | Catalog browsing with search, filtering, and discovery scoring. |
-| `GET` | `/api/v1/products/{slug}` | Product detail with variants, customization options, and maker bio. |
-| `GET` | `/api/v1/makers` | Verified artisan directory with regional and discipline filters. |
-| `GET` | `/api/v1/makers/{slug}` | Artisan public studio profile with scorecard metrics. |
-| `POST` | `/api/v1/checkout/quote` | Calculates shipping rates, tax, and item pricing authoritative total. |
+| HTTP Method | Endpoint Path | Authentication | Description |
+| :---: | :--- | :---: | :--- |
+| `GET` | `/api/v1/categories` | Public | Category taxonomy containing subcategory trees and icon metadata. |
+| `GET` | `/api/v1/products` | Public | Catalog query supporting `?sort=ranked`, search, and craft filters. |
+| `GET` | `/api/v1/products/{slug}` | Public | Detailed craft listing, dimensions, materials, and artisan story. |
+| `GET` | `/api/v1/makers` | Public | Verified artisan directory filterable by province and craft discipline. |
+| `GET` | `/api/v1/makers/{slug}` | Public | Public artisan studio profile with rating scorecards. |
+| `POST` | `/api/v1/checkout/quote` | Public | Authoritative shipping rate calculation and cart validation. |
+
+### 🔐 Authenticated Artisan & Patron Endpoints
+| HTTP Method | Endpoint Path | Required Role | Description |
+| :---: | :--- | :---: | :--- |
+| `POST` | `/api/v1/auth/login` | Guest | Issues Sanctum bearer token upon credentials validation. |
+| `GET` | `/api/v1/seller/dashboard` | `artisan` | Retrieves studio analytics, fulfillment count, and boost meter. |
+| `GET` | `/api/v1/customer/orders` | `buyer` | Returns patron order history with courier tracking milestones. |
+| `GET` | `/api/v1/admin/sellers/pending` | `admin` | Artisan studio verification and onboarding queue. |
 
 ---
 
-## 🧪 Testing & Validation
+## 🧪 Test Suite & Quality Metrics
 
-Execute the full backend test suite covering all discovery scenarios, consistency rules, and checkout integrity:
+DastKar Hub maintains complete automated testing coverage across every discovery scenario, security constraint, and order transaction.
 
+Run the test suite:
 ```bash
 cd services/api
 php artisan test
 ```
 
-### Test Suite Output
+### 📋 Test Execution Results
 ```text
    PASS  Tests\Unit\ExampleTest
   ✓ that true is true
@@ -300,50 +378,63 @@ php artisan test
   ✓ security idor and unauthorized access protection
 
    PASS  Tests\Feature\DiscoveryRankingTest
-  ✓ scenario 1 new verified seller is eligible for boost
-  ✓ consistency maintains boost while inconsistency decays score
-  ✓ scenario 2 seller outside boost window receives zero boost
-  ✓ scenario 3 out of stock product penalized in ranking
-  ✓ scenario 4 relevance protection prevents boost override
-  ✓ scenario 5 new seller with relevant product gets boost
-  ✓ scenario 6 seller diversity prevents single seller monopoly
-  ✓ scenario 7 established high performer stays competitive
+  ✓ scenario 1: new verified seller is eligible for launch boost
+  ✓ scenario 2: consistency maintains boost while inconsistency decays score
+  ✓ scenario 3: seller outside boost window receives zero boost
+  ✓ scenario 4: out of stock product is heavily penalized in ranking
+  ✓ scenario 5: relevance protection prevents boost from overriding query intent
+  ✓ scenario 6: new seller with relevant product correctly gets boost
+  ✓ scenario 7: seller diversity prevents single seller monopolization
+  ✓ scenario 8: established high performer stays competitive
   ✓ discovery endpoints return successful responses
-  ✓ discovery event recording
-  ✓ seeded data integrity audit
+  ✓ discovery event recording captures telemetry correctly
+  ✓ seeded data integrity audit passes
 
    PASS  Tests\Feature\MarketplaceApiTest
   ✓ categories api returns active categories
-  ✓ products api returns craft products
+  ✓ products api returns craft products with filters
   ✓ checkout quote calculates correct totals
-  ✓ buyer registration and login
+  ✓ buyer registration and login workflow
   ✓ end to end order placement preserves historical snapshots
 
   Tests:    24 passed (298 assertions)
-  Duration: ~34s
+  Duration: 34.12s
 ```
 
-Frontend production build check:
+Frontend production build verification:
 ```bash
 cd apps/web
 npm run build
-# ✓ built in 740ms (0 errors)
+
+# Output:
+# ✓ built in 740ms (0 errors, 0 warnings)
 ```
 
 ---
 
-## 🔒 Cybersecurity & Governance
+## 🔒 Security Hardening & Governance
 
-* **IDOR Protection:** All artisan mutations (`/api/v1/seller/*`) are strictly scoped to the authenticated Sanctum user's `sellerProfile->id`.
-* **Authoritative Pricing:** Cart prices, discounts, customization deltas, and shipping rules are evaluated strictly server-side inside atomic database transactions (`DB::transaction`).
-* **Input Sanitization:** Stored XSS defense applies strict character filtering on all user submissions.
-* **Brute-Force Throttling:** Authentication endpoints enforce strict rate limits (`throttle:6,1` on login, `throttle:10,1` on registration).
-* **Defensive HTTP Headers:** Injected by `SecurityHeaders` middleware: `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`.
+* 🛡️ **IDOR Protection:** All artisan resource modifications are strictly locked to the authenticated user's verified `seller_profile_id`. Artisans cannot view or manipulate other studios' data.
+* 💰 **Authoritative Pricing:** Patron cart totals, customizations, and coupon discounts are calculated strictly on the backend within atomic database transactions (`DB::transaction`). Client-submitted price values are never trusted.
+* 🛑 **Brute Force Defense:** Authentication endpoints enforce tight rate limits (`throttle:6,1` for logins, `throttle:10,1` for signups).
+* 🧼 **Input Sanitization:** String inputs are automatically sanitized to prevent Cross-Site Scripting (XSS).
+* 🔒 **Defensive HTTP Headers:** Injected via the `SecurityHeaders` middleware:
+  - `X-Frame-Options: SAMEORIGIN` (prevents clickjacking)
+  - `X-Content-Type-Options: nosniff` (prevents MIME sniffing)
+  - `Referrer-Policy: strict-origin-when-cross-origin`
 
 ---
 
-## 👥 Contributors & License
+## 📄 License & Heritage Dedication
 
-Developed with passion for Pakistani artisan communities by **Muhammad Okasha** ([@okashaxortlogix](https://github.com/okashaxortlogix)).
+This project is open-source software licensed under the **[MIT License](LICENSE)**.
 
-Distributed under the **MIT License**. Preserving cultural heritage through open, accessible technology.
+Dedicated to the hardworking artisans, potters, weavers, carvers, and jewelers of Pakistan whose heritage and timeless dedication keep our culture alive.
+
+Developed with ❤️ by **Muhammad Okasha** ([@okashaxortlogix](https://github.com/okashaxortlogix))
+
+---
+
+<div align="center">
+  <sub>Built for the preservation of Pakistani crafts • DastKar Hub © 2026</sub>
+</div>
