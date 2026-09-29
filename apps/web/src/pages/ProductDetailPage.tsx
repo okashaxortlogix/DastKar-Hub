@@ -10,12 +10,14 @@ import {
   Clock,
   Sparkles,
   ShoppingBag,
+  Heart,
   Store,
-  Layers
+  Award
 } from 'lucide-react';
 import { api } from '../lib/api';
 import { Product, ProductVariant } from '../types';
 import { useCart } from '../lib/cartContext';
+import { useWishlist } from '../lib/wishlistContext';
 import { ProductCard } from '../components/commerce/ProductCard';
 
 export const ProductDetailPage: React.FC = () => {
@@ -30,7 +32,12 @@ export const ProductDetailPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'details' | 'care' | 'reviews'>('details');
 
   const { addToCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const navigate = useNavigate();
+
+  const isWishlisted = product ? isInWishlist(product.id) : false;
+  const isOutOfStock = product?.stock_quantity !== undefined && product.stock_quantity <= 0;
+  const maxQuantity = product?.stock_quantity !== undefined && product.stock_quantity > 0 ? product.stock_quantity : 99;
 
   useEffect(() => {
     if (!slug) return;
@@ -97,28 +104,28 @@ export const ProductDetailPage: React.FC = () => {
     : [product.primary_image?.image_url || 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80'];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 space-y-10">
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-32 md:pb-10 space-y-6 sm:space-y-10">
       {/* Breadcrumb */}
-      <div className="flex items-center space-x-1.5 text-xs text-gray-500">
-        <Link to="/" className="hover:text-gray-900">Home</Link>
-        <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
-        <Link to="/products" className="hover:text-gray-900">Catalog</Link>
+      <div className="flex items-center space-x-1.5 text-xs text-gray-500 overflow-x-auto pb-1 scrollbar-none">
+        <Link to="/" className="hover:text-gray-900 shrink-0">Home</Link>
+        <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+        <Link to="/products" className="hover:text-gray-900 shrink-0">Catalog</Link>
         {product.category && (
           <>
-            <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
-            <Link to={`/products?category=${product.category.slug}`} className="hover:text-gray-900">
+            <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+            <Link to={`/products?category=${product.category.slug}`} className="hover:text-gray-900 shrink-0">
               {product.category.name}
             </Link>
           </>
         )}
-        <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+        <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
         <span className="text-gray-900 font-medium truncate max-w-xs">{product.title}</span>
       </div>
 
-      {/* Main Product Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left: Image Gallery */}
-        <div className="lg:col-span-6 space-y-4">
+      {/* Main Product Layout (Daraz 3-Column Structure) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
+        {/* Col 1 (5 cols): Image Gallery */}
+        <div className="lg:col-span-5 space-y-3">
           <div className="aspect-square bg-[#F7F4EE] rounded-2xl overflow-hidden border border-[#EBE5DA] relative shadow-xs">
             <img
               src={activeImage || allImages[0]}
@@ -134,24 +141,26 @@ export const ProductDetailPage: React.FC = () => {
 
           {/* Thumbnails */}
           {allImages.length > 1 && (
-            <div className="flex items-center space-x-3 overflow-x-auto pb-2">
+            <div className="flex items-center space-x-2.5 overflow-x-auto pb-1 scroll-touch scrollbar-none">
               {allImages.map((img, idx) => (
                 <button
                   key={idx}
+                  type="button"
                   onClick={() => setActiveImage(img)}
-                  className={`w-18 h-18 rounded-xl overflow-hidden border-2 shrink-0 transition-all ${
+                  aria-label={`View thumbnail image ${idx + 1}`}
+                  className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
                     activeImage === img ? 'border-[#C25E34] shadow-xs' : 'border-transparent opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                  <img src={img} alt={`${product.title} — view ${idx + 1}`} className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
           )}
         </div>
 
-        {/* Right: Product Buying Actions */}
-        <div className="lg:col-span-6 space-y-5 bg-white p-6 sm:p-8 rounded-2xl border border-[#EBE5DA]">
+        {/* Col 2 (4 cols): Product Buying Actions */}
+        <div className="lg:col-span-4 space-y-4 bg-white p-5 sm:p-6 rounded-2xl border border-[#EBE5DA] shadow-xs">
           {/* Artisan & Region */}
           <div className="flex items-center justify-between">
             <Link
@@ -162,13 +171,13 @@ export const ProductDetailPage: React.FC = () => {
               <span>By {product.seller?.business_name}</span>
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
             </Link>
-            <span className="text-xs text-gray-500 font-medium">
+            <span className="text-[11px] text-gray-500 font-medium">
               {product.seller?.location_city}, Pakistan
             </span>
           </div>
 
           {/* Title */}
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 leading-snug">
+          <h1 className="font-serif text-xl sm:text-2xl font-bold text-gray-900 leading-snug">
             {product.title}
           </h1>
 
@@ -176,31 +185,42 @@ export const ProductDetailPage: React.FC = () => {
           <div className="flex items-center space-x-3 text-xs">
             <div className="flex items-center text-amber-500">
               <Star className="w-4 h-4 fill-current" />
-              <span className="ml-1 font-bold text-gray-900 text-sm">
+              <span className="ml-1 font-bold text-gray-900 text-xs">
                 {Number(product.rating_average).toFixed(1)}
               </span>
             </div>
-            <span className="text-gray-400">({product.rating_count || 12} artisan reviews)</span>
+            <span className="text-gray-400">({product.rating_count ?? 0} reviews)</span>
             <span className="text-gray-300">|</span>
-            <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-medium">
-              In Stock & Ready
-            </span>
-          </div>
-
-          {/* Price */}
-          <div className="pt-2 pb-3 border-y border-gray-100 flex items-baseline space-x-3">
-            <span className="text-xs text-gray-500 font-medium">PKR</span>
-            <span className="text-3xl font-bold font-sans text-gray-900">
-              {Number(currentPrice).toLocaleString('en-PK')}
-            </span>
-            {product.compare_at_price && (
-              <span className="text-sm text-gray-400 line-through">
-                PKR {Number(product.compare_at_price).toLocaleString('en-PK')}
+            {isOutOfStock ? (
+              <span className="text-gray-600 bg-gray-100 px-2 py-0.5 rounded font-medium text-[11px]">
+                Out of Stock
+              </span>
+            ) : (
+              <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-medium text-[11px]">
+                In Stock &amp; Ready
               </span>
             )}
           </div>
 
-          {/* Variant Selection if available */}
+          {/* Price (Daraz Style: Rs. in bold terracotta + discount badge) */}
+          <div className="pt-2 pb-3 border-y border-gray-100 flex items-baseline flex-wrap gap-2">
+            <span className="text-xs text-[#C25E34] font-semibold">Rs.</span>
+            <span className="text-2xl sm:text-3xl font-bold font-sans text-[#C25E34]">
+              {Number(currentPrice).toLocaleString('en-PK')}
+            </span>
+            {product.compare_at_price && Number(product.compare_at_price) > Number(currentPrice) && (
+              <>
+                <span className="text-xs text-gray-400 line-through">
+                  Rs. {Number(product.compare_at_price).toLocaleString('en-PK')}
+                </span>
+                <span className="px-1.5 py-0.5 bg-red-50 text-red-600 text-[10px] font-bold rounded">
+                  -{Math.round(((Number(product.compare_at_price) - Number(currentPrice)) / Number(product.compare_at_price)) * 100)}%
+                </span>
+              </>
+            )}
+          </div>
+
+          {/* Variant Selection */}
           {product.variants && product.variants.length > 0 && (
             <div className="space-y-2">
               <label className="block text-xs font-bold uppercase tracking-wider text-gray-700">
@@ -211,15 +231,15 @@ export const ProductDetailPage: React.FC = () => {
                   <button
                     key={v.id}
                     onClick={() => setSelectedVariant(v)}
-                    className={`p-2.5 rounded-xl border text-left text-xs transition-all ${
+                    className={`p-2 rounded-xl border text-left text-xs transition-all cursor-pointer ${
                       selectedVariant?.id === v.id
                         ? 'border-[#C25E34] bg-amber-50/60 ring-1 ring-[#C25E34]'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     <div className="font-semibold text-gray-900">{v.name}</div>
-                    <div className="text-gray-500 font-sans mt-0.5">
-                      PKR {Number(v.price).toLocaleString('en-PK')}
+                    <div className="text-[#C25E34] font-sans font-medium text-[11px]">
+                      Rs. {Number(v.price).toLocaleString('en-PK')}
                     </div>
                   </button>
                 ))}
@@ -229,7 +249,7 @@ export const ProductDetailPage: React.FC = () => {
 
           {/* Customization Options */}
           {product.customization_options && product.customization_options.length > 0 && (
-            <div className="space-y-3 bg-[#FAF8F5] p-3.5 rounded-xl border border-[#EBE5DA]">
+            <div className="space-y-2 bg-[#FAF8F5] p-3 rounded-xl border border-[#EBE5DA]">
               <div className="flex items-center space-x-1.5 text-xs font-bold text-gray-900">
                 <Sparkles className="w-3.5 h-3.5 text-[#C25E34]" />
                 <span>Handmade Customization</span>
@@ -237,14 +257,14 @@ export const ProductDetailPage: React.FC = () => {
               {product.customization_options.map((opt) => (
                 <div key={opt.id} className="space-y-1">
                   <div className="flex items-center justify-between text-xs text-gray-700">
-                    <span className="font-medium">{opt.name}</span>
+                    <span className="font-medium text-[11px]">{opt.name}</span>
                     {opt.price_delta > 0 && (
-                      <span className="text-[11px] text-gray-500">+PKR {opt.price_delta}</span>
+                      <span className="text-[10px] text-gray-500">+Rs. {opt.price_delta}</span>
                     )}
                   </div>
                   <input
                     type="text"
-                    placeholder="e.g. Enter name or custom instruction..."
+                    placeholder="e.g. Inscription, colors, custom notes..."
                     value={customizationValues[opt.name] || ''}
                     onChange={(e) =>
                       setCustomizationValues({
@@ -252,7 +272,7 @@ export const ProductDetailPage: React.FC = () => {
                         [opt.name]: e.target.value,
                       })
                     }
-                    className="w-full text-xs p-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#C25E34]"
+                    className="w-full text-xs p-2 bg-white border border-gray-200 rounded-lg focus:outline-hidden focus:ring-1 focus:ring-[#C25E34]"
                   />
                 </div>
               ))}
@@ -260,54 +280,169 @@ export const ProductDetailPage: React.FC = () => {
           )}
 
           {/* Quantity & CTA Buttons */}
-          <div className="space-y-3 pt-2">
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center border border-gray-300 rounded-xl bg-gray-50">
+          <div className="space-y-2.5 pt-1">
+            {isOutOfStock ? (
+              <div className="p-3 bg-gray-100 rounded-xl text-center border border-gray-200">
+                <p className="text-xs font-semibold text-gray-700">Currently Out of Stock</p>
+                <p className="text-[11px] text-gray-500 mt-0.5">Being cured and fired in the workshop. Check back soon.</p>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2.5">
+                <div className="flex items-center border border-gray-300 rounded-xl bg-gray-50">
+                  <button
+                    type="button"
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    disabled={quantity <= 1}
+                    aria-label="Decrease quantity"
+                    className="px-2.5 py-1.5 text-gray-600 hover:text-gray-900 text-sm font-bold disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    −
+                  </button>
+                  <span className="px-2.5 py-1.5 text-xs font-semibold text-gray-900 min-w-8 text-center">{quantity}</span>
+                  <button
+                    type="button"
+                    onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))}
+                    disabled={quantity >= maxQuantity}
+                    aria-label="Increase quantity"
+                    className="px-2.5 py-1.5 text-gray-600 hover:text-gray-900 text-sm font-bold disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    +
+                  </button>
+                </div>
+
                 <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-bold"
+                  type="button"
+                  onClick={handleAddToCart}
+                  className="flex-1 py-2.5 px-3 bg-white border border-[#C25E34] text-[#C25E34] hover:bg-amber-50 font-bold text-xs rounded-xl transition-colors flex items-center justify-center space-x-1.5 shadow-2xs cursor-pointer"
                 >
-                  −
+                  <ShoppingBag className="w-4 h-4" />
+                  <span>Add to Cart</span>
                 </button>
-                <span className="px-3 py-2 text-xs font-semibold text-gray-900">{quantity}</span>
+
+                {/* Wishlist Button */}
                 <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-bold"
+                  type="button"
+                  onClick={() => product && toggleWishlist(product)}
+                  aria-label={isWishlisted ? `Remove ${product.title} from Wishlist` : `Add ${product.title} to Wishlist`}
+                  aria-pressed={isWishlisted}
+                  title={isWishlisted ? "Saved in Wishlist" : "Save to Wishlist"}
+                  className={`p-2.5 rounded-xl border transition-all cursor-pointer ${
+                    isWishlisted
+                      ? 'border-red-200 bg-red-50 text-red-600'
+                      : 'border-gray-200 bg-white text-gray-600 hover:text-red-500 hover:border-red-200'
+                  }`}
                 >
-                  +
+                  <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-red-500 text-red-500' : ''}`} />
                 </button>
               </div>
+            )}
 
+            {!isOutOfStock && (
               <button
-                onClick={handleAddToCart}
-                className="flex-1 py-3 px-4 bg-white border border-[#C25E34] text-[#C25E34] hover:bg-amber-50 font-bold text-xs rounded-xl transition-colors flex items-center justify-center space-x-1.5 shadow-2xs"
+                type="button"
+                onClick={handleBuyNow}
+                className="w-full py-3 px-4 bg-[#C25E34] hover:bg-[#A0441E] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors shadow-xs cursor-pointer"
               >
-                <ShoppingBag className="w-4 h-4" />
-                <span>Add to Cart</span>
+                Buy Now (Fast Checkout)
               </button>
+            )}
+          </div>
+        </div>
+
+        {/* Col 3 (3 cols): Daraz-Style Delivery & Artisan Seller Sidebar */}
+        <div className="lg:col-span-3 space-y-4">
+          {/* Delivery & Services Box */}
+          <div className="bg-white p-4 rounded-2xl border border-[#EBE5DA] space-y-3 text-xs shadow-xs">
+            <h3 className="font-bold text-gray-900 text-xs uppercase tracking-wider border-b border-gray-100 pb-2">
+              Delivery Options
+            </h3>
+            <div className="space-y-2.5">
+              <div className="flex items-start space-x-2.5">
+                <Truck className="w-4 h-4 text-[#C25E34] shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-semibold text-gray-900">Standard Courier Delivery</div>
+                  <div className="text-[11px] text-gray-500">3–5 business days nationwide</div>
+                  <div className="text-[11px] font-bold text-emerald-700 mt-0.5">Rs. 250 (Free over Rs. 3,000)</div>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-2.5 pt-2 border-t border-gray-100">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-semibold text-gray-900">Cash on Delivery Available</div>
+                  <div className="text-[11px] text-gray-500">Pay cash upon courier arrival</div>
+                </div>
+              </div>
             </div>
 
-            <button
-              onClick={handleBuyNow}
-              className="w-full py-3.5 px-4 bg-[#C25E34] hover:bg-[#A0441E] text-white font-bold text-xs rounded-xl transition-colors shadow-sm"
-            >
-              Buy It Now (Fast Checkout)
-            </button>
+            <h3 className="font-bold text-gray-900 text-xs uppercase tracking-wider border-b border-gray-100 pb-2 pt-2">
+              Service &amp; Warranty
+            </h3>
+            <div className="space-y-2.5">
+              <div className="flex items-start space-x-2.5">
+                <RotateCcw className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-semibold text-gray-900">7-Day Transit Replacement</div>
+                  <div className="text-[11px] text-gray-500">Protected against fragile ceramic breakage</div>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-2.5">
+                <Award className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-semibold text-gray-900">100% Authentic Handcrafted</div>
+                  <div className="text-[11px] text-gray-500">Direct artisan workshop provenance</div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Trust Guarantees */}
-          <div className="grid grid-cols-3 gap-2 pt-4 border-t border-gray-100 text-center text-[11px] text-gray-600">
-            <div className="flex flex-col items-center">
-              <ShieldCheck className="w-4 h-4 text-emerald-600 mb-1" />
-              <span>Authentic Maker</span>
+          {/* Sold By / Artisan Workshop Scorecard (Daraz Style) */}
+          <div className="bg-white p-4 rounded-2xl border border-[#EBE5DA] space-y-3 text-xs shadow-xs">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-2.5">
+              <div>
+                <span className="text-[10px] text-gray-400 font-medium">Sold by Master Workshop</span>
+                <Link
+                  to={`/makers/${product.seller?.slug}`}
+                  className="font-serif font-bold text-gray-900 text-sm block hover:text-[#C25E34] transition-colors"
+                >
+                  {product.seller?.business_name || 'Independent Artisan'}
+                </Link>
+              </div>
+              <span className="px-2 py-0.5 bg-amber-50 text-[#C25E34] text-[10px] font-bold rounded">
+                Verified
+              </span>
             </div>
-            <div className="flex flex-col items-center">
-              <Truck className="w-4 h-4 text-sky-600 mb-1" />
-              <span>Safe Courier Pack</span>
+
+            {/* Seller Scorecard */}
+            <div className="grid grid-cols-3 gap-2 text-center py-1">
+              <div>
+                <div className="font-extrabold text-[#C25E34] text-sm">98%</div>
+                <div className="text-[10px] text-gray-500">Positive Rating</div>
+              </div>
+              <div>
+                <div className="font-extrabold text-emerald-700 text-sm">100%</div>
+                <div className="text-[10px] text-gray-500">Ship on Time</div>
+              </div>
+              <div>
+                <div className="font-extrabold text-gray-900 text-sm">100%</div>
+                <div className="text-[10px] text-gray-500">Response Rate</div>
+              </div>
             </div>
-            <div className="flex flex-col items-center">
-              <RotateCcw className="w-4 h-4 text-amber-600 mb-1" />
-              <span>Safe Delivery Guarantee</span>
+
+            <div className="pt-2 border-t border-gray-100 flex items-center space-x-2">
+              <Link
+                to={`/makers/${product.seller?.slug}`}
+                className="flex-1 py-1.5 bg-[#FAF8F5] hover:bg-gray-100 text-gray-800 text-center font-semibold rounded-lg border border-gray-200 text-xs transition-colors"
+              >
+                Visit Store
+              </Link>
+              <Link
+                to="/contact"
+                className="flex-1 py-1.5 bg-[#C25E34] hover:bg-[#A0441E] text-white text-center font-semibold rounded-lg text-xs transition-colors shadow-2xs"
+              >
+                Chat Now
+              </Link>
             </div>
           </div>
         </div>
@@ -349,34 +484,43 @@ export const ProductDetailPage: React.FC = () => {
 
       {/* Description & Reviews Tabs */}
       <div className="bg-white rounded-2xl border border-[#EBE5DA] overflow-hidden">
-        <div className="flex border-b border-gray-100 text-xs font-bold uppercase tracking-wider text-gray-500">
+        <div role="tablist" aria-label="Product Information Tabs" className="flex border-b border-gray-100 text-xs font-bold uppercase tracking-wider text-gray-500 overflow-x-auto scrollbar-none">
           <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'details'}
             onClick={() => setActiveTab('details')}
-            className={`px-6 py-4 transition-colors border-b-2 ${
+            className={`px-6 py-4 transition-colors border-b-2 whitespace-nowrap ${
               activeTab === 'details' ? 'border-[#C25E34] text-[#C25E34] bg-[#FAF8F5]' : 'border-transparent hover:text-gray-800'
             }`}
           >
             Craft Details & Provenance
           </button>
           <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'care'}
             onClick={() => setActiveTab('care')}
-            className={`px-6 py-4 transition-colors border-b-2 ${
+            className={`px-6 py-4 transition-colors border-b-2 whitespace-nowrap ${
               activeTab === 'care' ? 'border-[#C25E34] text-[#C25E34] bg-[#FAF8F5]' : 'border-transparent hover:text-gray-800'
             }`}
           >
             Materials & Care
           </button>
           <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'reviews'}
             onClick={() => setActiveTab('reviews')}
-            className={`px-6 py-4 transition-colors border-b-2 ${
+            className={`px-6 py-4 transition-colors border-b-2 whitespace-nowrap ${
               activeTab === 'reviews' ? 'border-[#C25E34] text-[#C25E34] bg-[#FAF8F5]' : 'border-transparent hover:text-gray-800'
             }`}
           >
-            Customer Reviews ({product.reviews?.length || 1})
+            Customer Reviews ({product.reviews?.length ?? 0})
           </button>
         </div>
 
-        <div className="p-6 text-sm text-gray-700 leading-relaxed">
+        <div role="tabpanel" className="p-6 text-sm text-gray-700 leading-relaxed">
           {activeTab === 'details' && (
             <div className="space-y-4 max-w-3xl">
               <p>{product.description}</p>
@@ -447,17 +591,59 @@ export const ProductDetailPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Related Products */}
+      {/* Related Products (Daraz Dense Grid) */}
       {related.length > 0 && (
-        <div className="space-y-4 pt-6">
-          <h2 className="font-serif text-xl font-bold text-gray-900">More Handcrafted Treasures</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="space-y-4 pt-6 border-t border-gray-200">
+          <div className="flex items-center justify-between">
+            <h2 className="font-serif text-xl font-bold text-gray-900">You May Also Like</h2>
+            <Link to="/products" className="text-xs font-semibold text-[#C25E34] hover:underline">
+              View All Crafts &rarr;
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
             {related.map((rp) => (
-              <ProductCard key={rp.id} product={rp} />
+              <ProductCard key={rp.id} product={rp} compact={true} />
             ))}
           </div>
         </div>
       )}
+
+      {/* Mobile Sticky Action Bar (Fixed above MobileBottomNav on small screens) */}
+      <div className="fixed bottom-16 left-0 right-0 z-30 md:hidden bg-white/95 backdrop-blur-md border-t border-[#EBE5DA] px-3.5 py-2.5 shadow-xl flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <div className="text-[10px] text-gray-500 font-medium">Total Price</div>
+          <div className="text-base font-bold text-[#C25E34] font-sans truncate">
+            Rs. {Number(currentPrice * quantity).toLocaleString('en-PK')}
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2 shrink-0">
+          {!isOutOfStock ? (
+            <>
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                className="p-2.5 rounded-xl border border-[#C25E34] text-[#C25E34] hover:bg-amber-50 active:scale-95 transition-all shadow-xs cursor-pointer"
+                aria-label="Add to cart"
+                title="Add to Cart"
+              >
+                <ShoppingBag className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={handleBuyNow}
+                className="py-2.5 px-4 bg-[#C25E34] active:bg-[#a04a25] text-white font-bold text-xs uppercase tracking-wider rounded-xl active:scale-95 transition-all shadow-md cursor-pointer"
+              >
+                Buy Now
+              </button>
+            </>
+          ) : (
+            <span className="text-xs text-gray-500 font-semibold bg-gray-100 px-3 py-1.5 rounded-lg">
+              Out of Stock
+            </span>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

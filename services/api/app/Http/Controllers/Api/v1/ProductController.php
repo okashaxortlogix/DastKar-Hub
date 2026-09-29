@@ -61,13 +61,69 @@ class ProductController extends Controller
             $query->where('materials', 'like', $mat);
         }
 
+        // Filter by subcategory slug
+        if ($request->filled('subcategory')) {
+            $subSlug = $request->input('subcategory');
+            $subCat = Category::where('slug', $subSlug)->first();
+            if ($subCat) {
+                $query->where('category_id', $subCat->id);
+            }
+        }
+
+        // Filter by availability (in_stock vs made_to_order)
+        if ($request->filled('availability')) {
+            $avail = $request->input('availability');
+            if ($avail === 'in_stock') {
+                $query->where('stock_quantity', '>', 0);
+            } elseif ($avail === 'made_to_order') {
+                $query->where(function ($q) {
+                    $q->whereNull('stock_quantity')->orWhere('stock_quantity', '<=', 0);
+                });
+            }
+        }
+
+        // Filter by customization
+        if ($request->filled('customization')) {
+            $cust = $request->input('customization');
+            if ($cust === 'customizable') {
+                $query->where('is_customizable', true);
+            } elseif ($cust === 'standard') {
+                $query->where('is_customizable', false);
+            }
+        }
+
         // Filter by Featured
         if ($request->boolean('featured')) {
             $query->where('is_featured', true);
         }
 
         // Sorting
-        $sort = $request->input('sort', 'featured');
+        $sort = $request->input('sort');
+        $hasSearch = $request->filled('q');
+        $searchTerm = $hasSearch ? trim($request->input('q')) : null;
+
+        // Default to ranked discovery sorting if search or sort=ranked/featured
+        if ($sort === 'ranked' || (!$sort && $hasSearch) || $sort === 'featured') {
+            $allProducts = $query->get();
+            $ranked = app(\App\Services\Discovery\ProductRankingService::class)
+                ->rankProducts($allProducts, $searchTerm);
+
+            $perPage = (int) $request->input('per_page', 16);
+            $page = (int) $request->input('page', 1);
+            $sliced = $ranked->slice(($page - 1) * $perPage, $perPage)->values();
+
+            return response()->json([
+                'data' => $sliced,
+                'meta' => [
+                    'current_page' => $page,
+                    'last_page' => (int) ceil($ranked->count() / max(1, $perPage)),
+                    'per_page' => $perPage,
+                    'total' => $ranked->count(),
+                    'sorted_by' => 'ranked',
+                ],
+            ]);
+        }
+
         switch ($sort) {
             case 'price_low':
                 $query->orderBy('base_price', 'asc');
@@ -81,9 +137,8 @@ class ProductController extends Controller
             case 'newest':
                 $query->orderBy('created_at', 'desc');
                 break;
-            case 'featured':
             default:
-                $query->orderBy('is_featured', 'desc')->orderBy('rating_average', 'desc');
+                $query->orderBy('ranking_score', 'desc')->orderBy('rating_average', 'desc');
                 break;
         }
 

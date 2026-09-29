@@ -25,9 +25,15 @@ class AdminController extends Controller
         $this->checkAdmin($request);
 
         $totalGmv = Order::whereNotIn('status', ['cancelled'])->sum('total_amount');
+        $realGmv = Order::where('is_seeded', false)->whereNotIn('status', ['cancelled'])->sum('total_amount');
+        $demoGmv = Order::where('is_seeded', true)->whereNotIn('status', ['cancelled'])->sum('total_amount');
         $totalOrders = Order::count();
         $totalSellers = SellerProfile::count();
         $verifiedSellers = SellerProfile::whereIn('verification_status', ['verified', 'established'])->count();
+        $boostedNewSellers = SellerProfile::where('seller_status', 'active')
+            ->whereNotNull('new_seller_boost_started_at')
+            ->where('new_seller_boost_ends_at', '>=', now())
+            ->count();
         $totalBuyers = User::where('role', 'buyer')->count();
         $totalProducts = Product::count();
 
@@ -42,9 +48,12 @@ class AdminController extends Controller
         return response()->json([
             'data' => [
                 'gmv' => (float) $totalGmv,
+                'real_gmv' => (float) $realGmv,
+                'demo_gmv' => (float) $demoGmv,
                 'orders_count' => $totalOrders,
                 'sellers_count' => $totalSellers,
                 'verified_sellers_count' => $verifiedSellers,
+                'boosted_new_sellers_count' => $boostedNewSellers,
                 'buyers_count' => $totalBuyers,
                 'products_count' => $totalProducts,
                 'recent_orders' => $recentOrders,

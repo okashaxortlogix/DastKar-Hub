@@ -1,5 +1,52 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Noto Nastaliq Urdu", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Playfair Display", "Noto Nastaliq Urdu", Georgia, Cambria, serif;
+  --font-display: "Cinzel", "Playfair Display", Georgia, serif;
+  --color-terracotta: #C25E34;
+  --color-terracotta-dark: #A0441E;
+  --color-terracotta-light: #FBF0EB;
+  --color-emerald-craft: #065F46;
+  --color-warm-border: #EBE5DA;
+  --color-page-bg: #FAF8F5;
+}
+
+::selection {
+  background-color: #fef3c7; /* amber-100 */
+  color: #78350f; /* amber-900 */
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+  background-color: #f3efe8;
+}
+
+.skeleton-shimmer::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.4) 20%,
+    rgba(255, 255, 255, 0.6) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 1.8s infinite;
+  content: '';
+}
+
 @layer base {
   :root {
     --bg-page: #FAF8F5;
@@ -14,13 +61,25 @@
     --border-warm: #EBE5DA;
   }
 
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
     background-color: var(--bg-page);
     color: var(--text-primary);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-sans);
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
   }
 
   #root {
@@ -32,6 +91,35 @@
     text-align: left;
     border: none;
   }
+
+  /* Accessible focus indicators */
+  :focus-visible {
+    outline: 2px solid #C25E34;
+    outline-offset: 2px;
+  }
+
+  /* Prevent iOS Safari 16px input zoom issue on mobile devices */
+  @media (max-width: 640px) {
+    input:not([type="checkbox"]):not([type="radio"]),
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+}
+
+/* Utilities for responsive design */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Responsive horizontal momentum scrolling on touch devices */
+.scroll-touch {
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Custom scrollbars for craft filters */

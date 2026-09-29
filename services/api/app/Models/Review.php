@@ -19,11 +19,13 @@ class Review extends Model
         'images_json',
         'status',
         'seller_response',
+        'is_seeded',
     ];
 
     protected $casts = [
         'rating' => 'integer',
         'images_json' => 'array',
+        'is_seeded' => 'boolean',
     ];
 
     public function buyer()

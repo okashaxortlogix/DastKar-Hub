@@ -480,5 +480,8 @@ class DatabaseSeeder extends Seeder
             'status' => 'published',
             'seller_response' => 'Shukriya Ayesha sahiba! Serving patrons of traditional crafts keeps our generational kilns burning.',
         ]);
+
+        // Populate complete marketplace catalog and discovery data
+        $this->call(DastKarMarketplaceSeeder::class);
     }
 }

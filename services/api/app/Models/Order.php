@@ -25,6 +25,7 @@ class Order extends Model
         'notes',
         'placed_at',
         'delivered_at',
+        'is_seeded',
     ];
 
     protected $casts = [
@@ -35,6 +36,7 @@ class Order extends Model
         'shipping_address_snapshot' => 'array',
         'placed_at' => 'datetime',
         'delivered_at' => 'datetime',
+        'is_seeded' => 'boolean',
     ];
 
     public function buyer()

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\v1\AdminController;
 use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\CategoryController;
+use App\Http\Controllers\Api\v1\DiscoveryController;
 use App\Http\Controllers\Api\v1\DisputeController;
 use App\Http\Controllers\Api\v1\NotificationController;
 use App\Http\Controllers\Api\v1\OrderController;
@@ -27,6 +28,17 @@ Route::prefix('v1')->group(function () {
     Route::get('/products/{slug}', [ProductController::class, 'show']);
     Route::get('/makers', [SellerController::class, 'index']);
     Route::get('/makers/{slug}', [SellerController::class, 'show']);
+
+    // Internal Marketplace Discovery & Ranking Engine
+    Route::prefix('discovery')->group(function () {
+        Route::get('/trending', [DiscoveryController::class, 'trending']);
+        Route::get('/new-arrivals', [DiscoveryController::class, 'newArrivals']);
+        Route::get('/best-sellers', [DiscoveryController::class, 'bestSellers']);
+        Route::get('/recommended', [DiscoveryController::class, 'recommended']);
+        Route::get('/new-makers', [DiscoveryController::class, 'newMakers']);
+        Route::get('/config', [DiscoveryController::class, 'config']);
+        Route::post('/events', [DiscoveryController::class, 'recordEvent'])->middleware('throttle:120,1');
+    });
 
     // Cart / Checkout Quote (Accessible to both guests & logged in)
     Route::post('/checkout/quote', [OrderController::class, 'quote']);

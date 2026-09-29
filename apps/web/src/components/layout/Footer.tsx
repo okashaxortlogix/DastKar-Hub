@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Heart, MapPin, Truck, HelpCircle, Layers } from 'lucide-react';
+import { ShieldCheck, Heart, MapPin, Truck, Mail, Layers } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
@@ -59,10 +59,10 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* Main Footer Links */}
-      <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-2 md:grid-cols-5 gap-8">
-        <div className="col-span-2">
-          <Link to="/" className="flex items-center space-x-2.5 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-[#C25E34] text-white flex items-center justify-center">
+      <div className="max-w-7xl mx-auto px-4 py-8 sm:py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 sm:gap-8">
+        <div className="sm:col-span-2">
+          <Link to="/" className="flex items-center space-x-2.5 mb-4 group">
+            <div className="w-8 h-8 rounded-lg bg-[#C25E34] text-white flex items-center justify-center group-hover:bg-[#A0441E] transition-colors">
               <Layers className="w-4 h-4 text-amber-200" />
             </div>
             <span className="text-xl font-serif font-bold text-white tracking-tight">
@@ -70,7 +70,7 @@ export const Footer: React.FC = () => {
             </span>
           </Link>
           <p className="text-xs text-gray-400 leading-relaxed max-w-sm">
-            DastKar Hub is the digital home for Pakistan's independent makers, bridging indigenous craft workshops with patrons seeking authentic handmade treasures.
+            DastKar Hub is the digital home for Pakistan&apos;s independent makers, bridging indigenous craft workshops with patrons seeking authentic handmade treasures.
           </p>
           <div className="mt-4 flex items-center space-x-3 text-xs text-gray-400">
             <span>Currency:</span>
@@ -85,42 +85,62 @@ export const Footer: React.FC = () => {
         <div>
           <h5 className="font-semibold text-white text-xs uppercase tracking-wider mb-3">Explore Craft</h5>
           <ul className="space-y-2 text-xs">
-            <li><Link to="/products?category=home-decor" className="hover:text-amber-300">Home Décor</Link></li>
-            <li><Link to="/products?category=ceramics-pottery" className="hover:text-amber-300">Multani Blue Pottery</Link></li>
-            <li><Link to="/products?category=fashion-wearables" className="hover:text-amber-300">Handloom & Ajrak</Link></li>
-            <li><Link to="/products?category=jewelry-accessories" className="hover:text-amber-300">Silver & Gemstones</Link></li>
-            <li><Link to="/makers" className="hover:text-amber-300">Artisan Directory</Link></li>
+            <li><Link to="/products?category=home-decor" className="hover:text-amber-300 transition-colors">Home Décor</Link></li>
+            <li><Link to="/products?category=ceramics-pottery" className="hover:text-amber-300 transition-colors">Multani Blue Pottery</Link></li>
+            <li><Link to="/products?category=fashion-wearables" className="hover:text-amber-300 transition-colors">Handloom &amp; Ajrak</Link></li>
+            <li><Link to="/products?category=jewelry-accessories" className="hover:text-amber-300 transition-colors">Silver &amp; Gemstones</Link></li>
+            <li><Link to="/makers" className="hover:text-amber-300 transition-colors">Artisan Directory</Link></li>
           </ul>
         </div>
 
         <div>
           <h5 className="font-semibold text-white text-xs uppercase tracking-wider mb-3">For Makers</h5>
           <ul className="space-y-2 text-xs">
-            <li><Link to="/auth?mode=register&role=seller" className="hover:text-amber-300">Open Maker Storefront</Link></li>
-            <li><Link to="/seller/dashboard" className="hover:text-amber-300">Seller Dashboard</Link></li>
-            <li><span className="text-gray-500 cursor-not-allowed">Craft Standards</span></li>
-            <li><span className="text-gray-500 cursor-not-allowed">Packaging Guidelines</span></li>
+            <li><Link to="/auth?mode=register&role=seller" className="hover:text-amber-300 transition-colors">Open Maker Storefront</Link></li>
+            <li><Link to="/seller/dashboard" className="hover:text-amber-300 transition-colors">Seller Dashboard</Link></li>
+            <li><Link to="/makers" className="hover:text-amber-300 transition-colors">Artisan Community</Link></li>
+            <li><Link to="/products" className="hover:text-amber-300 transition-colors">Craft Standards</Link></li>
           </ul>
         </div>
 
         <div>
-          <h5 className="font-semibold text-white text-xs uppercase tracking-wider mb-3">Trust & Support</h5>
+          <h5 className="font-semibold text-white text-xs uppercase tracking-wider mb-3">Trust &amp; Support</h5>
           <ul className="space-y-2 text-xs">
-            <li><Link to="/account/orders" className="hover:text-amber-300">Track Order</Link></li>
-            <li><span className="text-gray-400">Returns & Exchanges</span></li>
-            <li><span className="text-gray-400">Payment Security</span></li>
-            <li><span className="text-gray-400">support@dastkarhub.pk</span></li>
+            <li><Link to="/support" className="hover:text-amber-300 transition-colors">Help &amp; Support</Link></li>
+            <li><Link to="/account/orders" className="hover:text-amber-300 transition-colors">Track Order</Link></li>
+            <li><Link to="/cart" className="hover:text-amber-300 transition-colors">Shopping Bag</Link></li>
+            <li>
+              <Link to="/ethics-charter" className="hover:text-amber-300 transition-colors">
+                Handcrafted Guarantee
+              </Link>
+            </li>
+            <li>
+              <a
+                href="mailto:support@dastkarhub.pk"
+                className="hover:text-amber-300 flex items-center gap-1.5 transition-colors"
+                title="Email DastKar Hub Support"
+              >
+                <Mail className="w-3.5 h-3.5 text-amber-400" />
+                <span>support@dastkarhub.pk</span>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
 
-      <div className="border-t border-gray-800 py-6 px-4 text-center text-xs text-gray-500">
+      <div className="border-t border-gray-800 py-6 px-4 pb-20 md:pb-6 text-center text-xs text-gray-400">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p>© 2026 DastKar Hub (Pvt) Ltd. All rights reserved.</p>
-          <div className="flex space-x-6">
-            <span>Terms of Service</span>
-            <span>Privacy Policy</span>
-            <span>Artisan Ethics Charter</span>
+          <p>© 2026 DastKar Hub (Pvt) Ltd. Preserving Pakistan&apos;s Handcrafted Heritage.</p>
+          <div className="flex flex-wrap items-center justify-center gap-6">
+            <Link to="/terms" className="hover:text-amber-300 transition-colors">
+              Terms of Service
+            </Link>
+            <Link to="/privacy" className="hover:text-amber-300 transition-colors">
+              Privacy Policy
+            </Link>
+            <Link to="/ethics-charter" className="hover:text-amber-300 transition-colors">
+              Artisan Ethics Charter
+            </Link>
           </div>
         </div>
       </div>

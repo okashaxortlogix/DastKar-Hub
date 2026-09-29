@@ -33,6 +33,10 @@ class SellerDashboardController extends Controller
         $activeProductsCount = Product::where('seller_id', $seller->id)->where('status', 'published')->count();
         $storeRating = $seller->rating_average;
 
+        // Discovery boost calculation & consistency status
+        $boostService = app(\App\Services\Discovery\NewSellerBoostService::class);
+        $discoveryBoost = $boostService->getBoostStatus($seller);
+
         // Recent seller orders
         $recentOrders = OrderItem::with(['order.buyer', 'product.primaryImage'])
             ->where('seller_id', $seller->id)
@@ -48,6 +52,7 @@ class SellerDashboardController extends Controller
                 'active_products_count' => $activeProductsCount,
                 'store_rating' => $storeRating,
                 'recent_orders' => $recentOrders,
+                'discovery_boost' => $discoveryBoost,
             ],
         ]);
     }

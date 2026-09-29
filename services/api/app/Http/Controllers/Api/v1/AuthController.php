@@ -40,6 +40,7 @@ class AuthController extends Controller
 
         if ($role === 'seller') {
             $businessName = $validated['business_name'] ?? ($user->name . "'s Crafts");
+            $boostDays = (int) config('discovery.new_seller_boost.duration_days', 30);
             SellerProfile::create([
                 'user_id' => $user->id,
                 'business_name' => $businessName,
@@ -49,6 +50,9 @@ class AuthController extends Controller
                 'location_region' => 'Pakistan',
                 'verification_status' => 'basic',
                 'seller_status' => 'active',
+                'new_seller_boost_started_at' => now(),
+                'new_seller_boost_ends_at' => now()->addDays($boostDays),
+                'onboarding_completed_at' => now(),
             ]);
         }
 

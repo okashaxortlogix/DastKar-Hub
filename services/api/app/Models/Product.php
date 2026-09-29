@@ -29,6 +29,14 @@ class Product extends Model
         'rating_count',
         'is_featured',
         'published_at',
+        'is_seeded',
+        'ranking_score',
+        'impressions_count',
+        'clicks_count',
+        'wishlist_count',
+        'sales_count',
+        'conversion_rate',
+        'last_ranked_at',
     ];
 
     protected $casts = [
@@ -41,6 +49,14 @@ class Product extends Model
         'rating_average' => 'float',
         'rating_count' => 'integer',
         'published_at' => 'datetime',
+        'is_seeded' => 'boolean',
+        'ranking_score' => 'float',
+        'impressions_count' => 'integer',
+        'clicks_count' => 'integer',
+        'wishlist_count' => 'integer',
+        'sales_count' => 'integer',
+        'conversion_rate' => 'float',
+        'last_ranked_at' => 'datetime',
     ];
 
     public function seller()

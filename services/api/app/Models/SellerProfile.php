@@ -26,6 +26,13 @@ class SellerProfile extends Model
         'avatar_url',
         'cover_url',
         'social_links',
+        'is_seeded',
+        'new_seller_boost_started_at',
+        'new_seller_boost_ends_at',
+        'onboarding_completed_at',
+        'response_time_minutes',
+        'on_time_delivery_rate',
+        'cancellation_rate',
     ];
 
     protected $casts = [
@@ -34,6 +41,13 @@ class SellerProfile extends Model
         'completed_orders' => 'integer',
         'total_sales' => 'float',
         'social_links' => 'array',
+        'is_seeded' => 'boolean',
+        'new_seller_boost_started_at' => 'datetime',
+        'new_seller_boost_ends_at' => 'datetime',
+        'onboarding_completed_at' => 'datetime',
+        'response_time_minutes' => 'integer',
+        'on_time_delivery_rate' => 'float',
+        'cancellation_rate' => 'float',
     ];
 
     public function user()

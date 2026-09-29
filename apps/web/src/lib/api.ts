@@ -102,6 +102,63 @@ class ApiClient {
     return this.request(`/makers/${slug}`);
   }
 
+  // Internal Discovery & Ranking Endpoints
+  async getTrendingProducts(limit: number = 8): Promise<{ data: Product[]; meta: any }> {
+    return this.request(`/discovery/trending?limit=${limit}`);
+  }
+
+  async getNewArrivals(limit: number = 8): Promise<{ data: Product[]; meta: any }> {
+    return this.request(`/discovery/new-arrivals?limit=${limit}`);
+  }
+
+  async getBestSellers(limit: number = 8): Promise<{ data: Product[]; meta: any }> {
+    return this.request(`/discovery/best-sellers?limit=${limit}`);
+  }
+
+  async getRecommendedProducts(params: { category?: string; limit?: number } = {}): Promise<{ data: Product[]; meta: any }> {
+    const qs = new URLSearchParams();
+    if (params.category) qs.append('category', params.category);
+    if (params.limit) qs.append('limit', String(params.limit));
+    const query = qs.toString() ? `?${qs.toString()}` : '';
+    return this.request(`/discovery/recommended${query}`);
+  }
+
+  async getNewMakers(limit: number = 6): Promise<{ data: SellerProfile[]; meta: any }> {
+    return this.request(`/discovery/new-makers?limit=${limit}`);
+  }
+
+  async getDiscoveryConfig(): Promise<{ data: any }> {
+    return this.request('/discovery/config');
+  }
+
+  async trackDiscoveryEvent(payload: {
+    event_type: string;
+    surface: string;
+    product_id?: number;
+    seller_id?: number;
+    category_id?: number;
+    position?: number;
+    metadata?: any;
+  }): Promise<void> {
+    try {
+      let sessionId = localStorage.getItem('dastkar_session_id');
+      if (!sessionId) {
+        sessionId = 'sess_' + Math.random().toString(36).substring(2, 12);
+        localStorage.setItem('dastkar_session_id', sessionId);
+      }
+
+      await this.request('/discovery/events', {
+        method: 'POST',
+        body: JSON.stringify({
+          ...payload,
+          session_id: sessionId,
+        }),
+      });
+    } catch {
+      // Background telemetry failure should never block UI
+    }
+  }
+
   // Checkout endpoints
   async getQuote(payload: {
     items: Array<{

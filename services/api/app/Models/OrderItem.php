@@ -22,6 +22,7 @@ class OrderItem extends Model
         'unit_price',
         'subtotal',
         'status',
+        'is_seeded',
     ];
 
     protected $casts = [
@@ -30,6 +31,7 @@ class OrderItem extends Model
         'subtotal' => 'float',
         'product_snapshot_json' => 'array',
         'customization_json' => 'array',
+        'is_seeded' => 'boolean',
     ];
 
     public function order()

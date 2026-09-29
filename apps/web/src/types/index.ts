@@ -32,6 +32,32 @@ export interface SellerProfile {
   user?: User;
   products?: Product[];
   reviews?: Review[];
+  is_seeded?: boolean;
+  new_seller_boost_started_at?: string | null;
+  new_seller_boost_ends_at?: string | null;
+  response_time_minutes?: number;
+  on_time_delivery_rate?: number;
+  cancellation_rate?: number;
+  discovery_boost?: DiscoveryBoostStatus;
+}
+
+export interface DiscoveryBoostStatus {
+  is_boosted: boolean;
+  boost_score: number;
+  boost_percent: number;
+  current_boost_percent: number;
+  is_consistent: boolean;
+  remaining_days: number;
+  duration_days: number;
+  started_at?: string | null;
+  ends_at?: string | null;
+  metrics?: {
+    has_in_stock: boolean;
+    cancellation_rate: number;
+    cancellation_ok: boolean;
+    on_time_delivery_rate: number;
+    delivery_ok: boolean;
+  };
 }
 
 export interface Category {
@@ -95,6 +121,14 @@ export interface Product {
   rating_average: number;
   rating_count: number;
   is_featured: boolean;
+  is_seeded?: boolean;
+  ranking_score?: number;
+  impressions_count?: number;
+  clicks_count?: number;
+  wishlist_count?: number;
+  sales_count?: number;
+  _ranking_score?: number;
+  _ranking_signals?: Record<string, number>;
   created_at?: string;
   seller: SellerProfile;
   category?: Category;
@@ -129,6 +163,7 @@ export interface OrderItem {
   status: 'pending' | 'accepted' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   seller?: SellerProfile;
   product?: Product;
+  is_seeded?: boolean;
 }
 
 export interface Order {
@@ -160,6 +195,7 @@ export interface Order {
   created_at: string;
   items?: OrderItem[];
   buyer?: User;
+  is_seeded?: boolean;
 }
 
 export interface Review {
@@ -172,8 +208,9 @@ export interface Review {
   comment: string;
   status: string;
   seller_response?: string | null;
-  created_at: string;
   buyer?: User;
+  created_at?: string;
+  is_seeded?: boolean;
 }
 
 export interface Address {

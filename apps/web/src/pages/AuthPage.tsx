@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { Store, User, Lock, Mail, Phone, MapPin, ArrowRight, ShieldCheck } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Store, User, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../lib/authContext';
 
 export const AuthPage: React.FC = () => {
@@ -11,6 +11,7 @@ export const AuthPage: React.FC = () => {
 
   const [mode, setMode] = useState<'login' | 'register'>(initialMode);
   const [role, setRole] = useState<'buyer' | 'seller'>(initialRole);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -19,7 +20,7 @@ export const AuthPage: React.FC = () => {
     phone: '',
     business_name: '',
     craft_description: '',
-    location_city: 'Karachi',
+    location_city: '',
   });
 
   const [errorMsg, setErrorMsg] = useState('');
@@ -67,26 +68,11 @@ export const AuthPage: React.FC = () => {
     }
   };
 
-  // Quick Demo Login Helper for Testing
-  const handleDemoLogin = async (demoEmail: string) => {
-    setSubmitting(true);
-    setErrorMsg('');
-    try {
-      const u = await login(demoEmail, 'password123');
-      if (u.role === 'seller') navigate('/seller/dashboard');
-      else if (u.role === 'admin') navigate('/admin/dashboard');
-      else navigate(redirectPath);
-    } catch (e: any) {
-      setErrorMsg(e.message || 'Failed demo login');
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   return (
-    <div className="max-w-md mx-auto my-12 px-4 space-y-6">
-      <div className="text-center space-y-2">
-        <h1 className="font-serif text-3xl font-bold text-gray-900">
+    <div className="max-w-md mx-auto my-6 sm:my-12 px-3 sm:px-4 space-y-5 sm:space-y-6">
+      <div className="text-center space-y-1.5 sm:space-y-2">
+        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900">
           {mode === 'login' ? 'Sign In to DastKar Hub' : 'Join DastKar Hub'}
         </h1>
         <p className="text-xs text-gray-500">
@@ -96,13 +82,16 @@ export const AuthPage: React.FC = () => {
         </p>
       </div>
 
-      <div className="bg-white p-6 rounded-2xl border border-[#EBE5DA] shadow-xs space-y-5">
+      <div className="bg-white p-4 sm:p-7 rounded-2xl border border-[#EBE5DA] shadow-xs space-y-4 sm:space-y-5">
         {/* Toggle Mode */}
-        <div className="flex bg-[#FAF8F5] p-1 rounded-xl border border-[#EBE5DA] text-xs font-semibold">
+        <div className="grid grid-cols-2 p-1 bg-gray-100 rounded-xl text-xs font-semibold">
           <button
             type="button"
-            onClick={() => setMode('login')}
-            className={`flex-1 py-2 rounded-lg transition-colors ${
+            onClick={() => {
+              setMode('login');
+              setErrorMsg('');
+            }}
+            className={`py-2 rounded-lg transition-all ${
               mode === 'login' ? 'bg-white text-gray-900 shadow-2xs font-bold' : 'text-gray-500 hover:text-gray-900'
             }`}
           >
@@ -110,8 +99,11 @@ export const AuthPage: React.FC = () => {
           </button>
           <button
             type="button"
-            onClick={() => setMode('register')}
-            className={`flex-1 py-2 rounded-lg transition-colors ${
+            onClick={() => {
+              setMode('register');
+              setErrorMsg('');
+            }}
+            className={`py-2 rounded-lg transition-all ${
               mode === 'register' ? 'bg-white text-gray-900 shadow-2xs font-bold' : 'text-gray-500 hover:text-gray-900'
             }`}
           >
@@ -119,9 +111,9 @@ export const AuthPage: React.FC = () => {
           </button>
         </div>
 
-        {/* Role toggle if registering */}
+        {/* Role Selector (when registering) */}
         {mode === 'register' && (
-          <div className="grid grid-cols-2 gap-3 text-xs">
+          <div className="grid grid-cols-2 gap-2 text-xs">
             <button
               type="button"
               onClick={() => setRole('buyer')}
@@ -149,60 +141,90 @@ export const AuthPage: React.FC = () => {
           </div>
         )}
 
+
         {errorMsg && (
-          <div className="p-3 bg-red-50 text-red-700 text-xs rounded-xl border border-red-200">
+          <div role="alert" className="p-3 bg-red-50 text-red-700 text-xs rounded-xl border border-red-200">
             {errorMsg}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
+        <form onSubmit={handleSubmit} className="space-y-4 text-xs">
           {mode === 'register' && (
             <div>
-              <label className="font-semibold text-gray-700 block mb-1">Your Full Name *</label>
+              <label htmlFor="auth-name" className="font-semibold text-gray-700 block mb-1">
+                Your Full Name *
+              </label>
               <input
+                id="auth-name"
                 type="text"
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="e.g. Fatima Tariq"
-                className="w-full p-2.5 bg-[#FAF8F5] border border-[#E5E0D5] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#C25E34]"
+                className="w-full p-2.5 bg-[#FAF8F5] border border-[#E5E0D5] rounded-xl focus:outline-hidden focus:ring-1 focus:ring-[#C25E34]"
               />
             </div>
           )}
 
           <div>
-            <label className="font-semibold text-gray-700 block mb-1">Email Address *</label>
+            <label htmlFor="auth-email" className="font-semibold text-gray-700 block mb-1">
+              Email Address *
+            </label>
             <input
+              id="auth-email"
               type="email"
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               placeholder="e.g. patron@dastkarhub.pk"
-              className="w-full p-2.5 bg-[#FAF8F5] border border-[#E5E0D5] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#C25E34]"
+              className="w-full p-2.5 bg-[#FAF8F5] border border-[#E5E0D5] rounded-xl focus:outline-hidden focus:ring-1 focus:ring-[#C25E34]"
             />
           </div>
 
           <div>
-            <label className="font-semibold text-gray-700 block mb-1">Password *</label>
-            <input
-              type="password"
-              required
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              placeholder="••••••••"
-              className="w-full p-2.5 bg-[#FAF8F5] border border-[#E5E0D5] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#C25E34]"
-            />
+            <div className="flex items-center justify-between mb-1">
+              <label htmlFor="auth-password" className="font-semibold text-gray-700 block">
+                Password *
+              </label>
+              {mode === 'login' && (
+                <span className="text-[11px] text-[#C25E34] hover:underline cursor-pointer">
+                  Forgot password?
+                </span>
+              )}
+            </div>
+            <div className="relative flex items-center">
+              <input
+                id="auth-password"
+                type={showPassword ? 'text' : 'password'}
+                required
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                placeholder="••••••••"
+                className="w-full p-2.5 pr-10 bg-[#FAF8F5] border border-[#E5E0D5] rounded-xl focus:outline-hidden focus:ring-1 focus:ring-[#C25E34]"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                className="absolute right-3 text-gray-400 hover:text-gray-600 p-1"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
 
           {mode === 'register' && (
             <div>
-              <label className="font-semibold text-gray-700 block mb-1">Phone Number</label>
+              <label htmlFor="auth-phone" className="font-semibold text-gray-700 block mb-1">
+                Phone Number (WhatsApp friendly)
+              </label>
               <input
+                id="auth-phone"
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 placeholder="+92 300 1234567"
-                className="w-full p-2.5 bg-[#FAF8F5] border border-[#E5E0D5] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#C25E34]"
+                className="w-full p-2.5 bg-[#FAF8F5] border border-[#E5E0D5] rounded-xl focus:outline-hidden focus:ring-1 focus:ring-[#C25E34]"
               />
             </div>
           )}
@@ -210,37 +232,46 @@ export const AuthPage: React.FC = () => {
           {mode === 'register' && role === 'seller' && (
             <>
               <div>
-                <label className="font-semibold text-gray-700 block mb-1">Artisan / Workshop Name *</label>
+                <label htmlFor="auth-business-name" className="font-semibold text-gray-700 block mb-1">
+                  Artisan / Workshop Name *
+                </label>
                 <input
+                  id="auth-business-name"
                   type="text"
                   required
                   value={formData.business_name}
                   onChange={(e) => setFormData({ ...formData, business_name: e.target.value })}
                   placeholder="e.g. Multani Kashigar Guild"
-                  className="w-full p-2.5 bg-[#FAF8F5] border border-[#E5E0D5] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#C25E34]"
+                  className="w-full p-2.5 bg-[#FAF8F5] border border-[#E5E0D5] rounded-xl focus:outline-hidden focus:ring-1 focus:ring-[#C25E34]"
                 />
               </div>
 
               <div>
-                <label className="font-semibold text-gray-700 block mb-1">City / Region *</label>
+                <label htmlFor="auth-location-city" className="font-semibold text-gray-700 block mb-1">
+                  City / Region *
+                </label>
                 <input
+                  id="auth-location-city"
                   type="text"
                   required
                   value={formData.location_city}
                   onChange={(e) => setFormData({ ...formData, location_city: e.target.value })}
                   placeholder="e.g. Multan, Chiniot, Peshawar"
-                  className="w-full p-2.5 bg-[#FAF8F5] border border-[#E5E0D5] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#C25E34]"
+                  className="w-full p-2.5 bg-[#FAF8F5] border border-[#E5E0D5] rounded-xl focus:outline-hidden focus:ring-1 focus:ring-[#C25E34]"
                 />
               </div>
 
               <div>
-                <label className="font-semibold text-gray-700 block mb-1">Craft Description</label>
+                <label htmlFor="auth-craft-description" className="font-semibold text-gray-700 block mb-1">
+                  Craft Description
+                </label>
                 <textarea
+                  id="auth-craft-description"
                   rows={2}
                   value={formData.craft_description}
                   onChange={(e) => setFormData({ ...formData, craft_description: e.target.value })}
                   placeholder="Describe your handmade products and materials..."
-                  className="w-full p-2.5 bg-[#FAF8F5] border border-[#E5E0D5] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#C25E34]"
+                  className="w-full p-2.5 bg-[#FAF8F5] border border-[#E5E0D5] rounded-xl focus:outline-hidden focus:ring-1 focus:ring-[#C25E34]"
                 />
               </div>
             </>
@@ -249,41 +280,12 @@ export const AuthPage: React.FC = () => {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-3 bg-[#C25E34] hover:bg-[#A0441E] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors shadow-sm disabled:opacity-50"
+            className="w-full py-3 bg-[#C25E34] hover:bg-[#A0441E] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors shadow-xs disabled:opacity-50"
           >
             {submitting ? 'Authenticating...' : mode === 'login' ? 'Sign In' : 'Create Account'}
           </button>
         </form>
 
-        {/* Demo Fast Login Pills for evaluation */}
-        <div className="pt-4 border-t border-gray-100 space-y-2">
-          <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider text-center">
-            One-Click Test Accounts:
-          </p>
-          <div className="flex flex-col gap-1.5 text-xs">
-            <button
-              onClick={() => handleDemoLogin('ayesha.buyer@dastkarhub.pk')}
-              className="px-2.5 py-1.5 bg-[#FAF8F5] hover:bg-gray-100 rounded-lg text-left border border-gray-200 text-gray-700 flex justify-between"
-            >
-              <span>Patron: <strong>Ayesha Siddiqui</strong></span>
-              <span className="text-gray-400">buyer</span>
-            </button>
-            <button
-              onClick={() => handleDemoLogin('fayyaz.kashigar@dastkarhub.pk')}
-              className="px-2.5 py-1.5 bg-[#FAF8F5] hover:bg-amber-50 rounded-lg text-left border border-amber-200 text-amber-900 flex justify-between"
-            >
-              <span>Maker: <strong>Ustad Fayyaz (Multan)</strong></span>
-              <span className="text-amber-700 font-semibold">seller</span>
-            </button>
-            <button
-              onClick={() => handleDemoLogin('admin@dastkarhub.pk')}
-              className="px-2.5 py-1.5 bg-[#FAF8F5] hover:bg-purple-50 rounded-lg text-left border border-purple-200 text-purple-900 flex justify-between"
-            >
-              <span>Admin: <strong>Platform Operations</strong></span>
-              <span className="text-purple-700 font-semibold">admin</span>
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );
