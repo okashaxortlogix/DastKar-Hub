@@ -1,59 +1,107 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# DastKar Hub — Backend API (`services/api`)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This directory contains the core REST API backend for **DastKar Hub**, built with **PHP 8.2+** and **Laravel 12**.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 1. Directory Structure & File Map
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```text
+services/api/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/Api/v1/       # Thin API resource controllers
+│   │   │   ├── AuthController.php    # User registration, token issuance, login & profile
+│   │   │   ├── CategoryController.php# Hierarchical categories & child trees
+│   │   │   ├── ProductController.php # Full-text search, multi-filters, & product details
+│   │   │   ├── SellerController.php  # Public artisan maker directory & profiles
+│   │   │   ├── OrderController.php   # Authoritative checkout quote, orders, reviews
+│   │   │   ├── SellerDashboardController.php # Seller stats, products CRUD, fulfillment
+│   │   │   └── AdminController.php   # Platform metrics (GMV), artisan verification, audit
+│   │   └── Middleware/
+│   │       └── SecurityHeaders.php   # Defensive response headers (OWASP best practice)
+│   ├── Models/                       # Eloquent models with relations, casts & hidden fields
+│   │   ├── User.php                  # User entity with Sanctum tokens and role checks
+│   │   ├── SellerProfile.php         # Maker metadata, craft description, badges & ratings
+│   │   ├── Category.php              # Craft discipline with children relations
+│   │   ├── Product.php               # Product with pricing, variants & customization
+│   │   ├── ProductImage.php          # Ordered gallery images
+│   │   ├── ProductVariant.php        # Sizing, dimensions, style variants
+│   │   ├── CustomizationOption.php   # Structured buyer customizations
+│   │   ├── Address.php               # Shipping address models
+│   │   ├── Order.php                 # Orders with currency, totals, & payment states
+│   │   ├── OrderItem.php             # Historical snapshots preserving title, image, price
+│   │   ├── Payment.php               # Payment records (COD, JazzCash, Cards, Bank)
+│   │   ├── Review.php                # Verified buyer reviews & artisan responses
+│   │   └── AuditLog.php              # Tamper-evident admin & seller audit logs
+│   └── Services/
+│       └── CheckoutService.php       # Transaction-safe authoritative pricing engine
+├── database/
+│   ├── migrations/                   # 12 relational database migrations
+│   └── seeders/
+│       └── DatabaseSeeder.php        # Realistic Pakistani craft seed data
+├── routes/
+│   ├── api.php                       # Versioned /api/v1 routes with rate limits
+│   └── web.php                       # Basic web ping
+├── tests/
+│   └── Feature/
+│       └── MarketplaceApiTest.php    # Automated feature test suite (80 assertions)
+├── config/                           # Application configuration files (CORS, Sanctum, etc.)
+└── composer.json                     # Backend PHP dependencies
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 2. API Endpoints Map (`/api/v1`)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Public Catalog Endpoints
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/v1/auth/register` | Register new buyer or maker account (Rate limited) |
+| `POST` | `/api/v1/auth/login` | Authenticate and obtain Sanctum bearer token (Rate limited) |
+| `GET` | `/api/v1/categories` | Retrieve hierarchical categories tree |
+| `GET` | `/api/v1/categories/{slug}` | Retrieve category and associated crafts |
+| `GET` | `/api/v1/products` | Filterable craft catalog (`q`, `category`, `min_price`, `material`, etc.) |
+| `GET` | `/api/v1/products/featured`| Retrieve curated featured products |
+| `GET` | `/api/v1/products/{slug}` | Full product details with seller, variants, & reviews |
+| `GET` | `/api/v1/makers` | Directory of verified Pakistani artisans |
+| `GET` | `/api/v1/makers/{slug}` | Artisan storefront profile & story |
+| `POST` | `/api/v1/checkout/quote` | Authoritative server quote calculation |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Authenticated Patron Endpoints (`auth:sanctum`)
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/v1/auth/me` | Current user profile |
+| `POST` | `/api/v1/auth/logout` | Revoke active bearer token |
+| `POST` | `/api/v1/checkout/process` | Place order (Atomic stock deduction + snapshot) |
+| `GET` | `/api/v1/orders` | Patron order history |
+| `GET` | `/api/v1/orders/{orderNumber}` | Order details & courier tracking |
+| `POST` | `/api/v1/orders/{orderNumber}/review` | Submit review for delivered product |
+| `GET` | `/api/v1/addresses` | Saved customer delivery addresses |
 
-## Laravel Sponsors
+### Authenticated Seller Hub (`auth:sanctum` + seller role)
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/v1/seller/stats` | Live sales, total orders, rating, & recent items |
+| `GET` | `/api/v1/seller/products` | Manage seller's craft pieces |
+| `POST` | `/api/v1/seller/products` | Publish new piece with variants & photos |
+| `PUT` | `/api/v1/seller/products/{id}` | Update product pricing or stock |
+| `DELETE` | `/api/v1/seller/products/{id}`| Remove piece from store |
+| `GET` | `/api/v1/seller/orders` | Fulfillment queue |
+| `PATCH` | `/api/v1/seller/orders/{id}/status` | Advance fulfillment status (`processing`, `shipped`, `delivered`) |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Platform Operations (`auth:sanctum` + admin role)
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/v1/admin/stats` | Platform GMV, orders count, seller/buyer statistics |
+| `POST` | `/api/v1/admin/sellers/{id}/verify` | Assign `verified` or `established` badge |
+| `GET` | `/api/v1/admin/audit-logs` | Review tamper-evident administrative audit trail |
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 3. Running Backend Tests
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Run all automated feature tests:
+```bash
+php artisan test --filter=MarketplaceApiTest
+```
