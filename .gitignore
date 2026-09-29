@@ -1,0 +1,10 @@
+# Root Git Ignore
+node_modules/
+vendor/
+.env
+*.log
+database/*.sqlite
+database/*.sqlite-journal
+dist/
+.DS_Store
+Thumbs.db
